@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<spark>
+    <jnode name="rdd1" type="sourceFile" id="rdd1">
+        <path>src/main/resources/model/in.txt</path>
+        <format>csv</format>
+    </jnode>
+    <jnode name="mapRdd"  type="map"  fromid="rdd1" id="mapRdd">
+        <expression>p=>p+"hello"</expression>
+    </jnode>
+    <jnode name="sink"  type="sinkFile"  fromid="mapRdd" id="sink">
+        <path>src/main/resources/class/tmp.txt</path>
+        <format>csv</format>
+    </jnode>
+</spark>
