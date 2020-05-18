@@ -159,7 +159,9 @@ public class KVSqlliteUtil {
 			ResultSet rs = statement.executeQuery("select key from " + tableName + ";");
 			while (rs.next()) {
 				String key = rs.getString("key");
-				keys.add(key);
+				if (key!=null) {
+					keys.add(key);
+				}
 			}
 			statement.close();
 		} catch (SQLException e) {
