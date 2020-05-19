@@ -1,6 +1,5 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-default" href="/svg/new" rel="table-hover">New</a>
-		<a class="btn btn-sm btn-default" href="#" rel="table-sm">Close</a>
+		<a class="btn btn-sm btn-danger" href="/svg/new" rel="table-hover"><i class="glyphicon glyphicon-plus">New</i></a>
 	</span>
 	<div class="preview">SVG List</div>
 <div class="view">

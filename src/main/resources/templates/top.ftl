@@ -20,8 +20,7 @@
 		</ul>
 		<ul class="nav" id="menu-layoutit" style="padding-top:15px;">
 			<li class="menu-spark">			
-				<span>My Charts</span>
-				<span   onClick="location.href='/svg/all'">Svg List</span>
+				<span   onClick="location.href='/svg/all'">Projects</span>
 				<span   onClick="location.href='/jnode/all'">Jnodes</span>
 				
 				

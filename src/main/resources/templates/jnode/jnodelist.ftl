@@ -1,6 +1,5 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-default" href="/jnode/new" rel="table-hover">New</a>
-		<a class="btn btn-sm btn-default" href="#" rel="table-sm">Close</a>
+		<a class="btn btn-sm btn-danger" href="/jnode/new" rel="table-hover"><i class="glyphicon glyphicon-plus">New</i></a>
 	</span>
 	<div class="preview">Jnode List</div>
 <div class="view">
