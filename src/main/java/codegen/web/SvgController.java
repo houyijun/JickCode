@@ -95,7 +95,7 @@ public class SvgController {
 
 		Map<String, String> nodes = storageService.getAllJNodes();
 		List<String> names = new ArrayList<String>();
-		List<String> modals = new ArrayList<String>();
+		Map<String,String> modelMap=new HashMap<String,String>();
 		for (String key : nodes.keySet()) {
 			names.add(key);
 			String modal = "";
@@ -106,10 +106,10 @@ public class SvgController {
 				LOG.error("模板加载异常:{}", e);
 
 			}
-			modals.add(modal);
+			modelMap.put(key, modal);
 		}
 		map.put("names", names);
-		map.put("modals", modals);
+		map.put("modals", modelMap);
 		return "/frame";
 	}
 
@@ -142,7 +142,11 @@ public class SvgController {
 	public String getSvg(String svgName) {
 		String json = storageService.getSvgJson(svgName);
 		LOG.info("###query svgname={},svg={}", svgName, json);
-		return json;
+		if (json!=null) {
+			return json;
+		}else {
+			return "";
+		}
 	}
 
 	private JSONObject getJsonResp(String code, String msg, Object data) {

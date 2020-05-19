@@ -429,6 +429,10 @@
         			dataType:"json",
         			data:{svgName:svgname},
         			success:function(res){
+        				if (res==""){
+        					console.log("svg content is null");
+        					return;
+        				}	
         				console.log(res.data);
         				var svg=eval('(' + res.data + ')');        				
                     	dragData=svg.chart;
@@ -487,10 +491,28 @@
 	<div id="spark-canvas"></div>
 	
 	<div id="spark-model" style="display:none;">
-	 	<#list modals as modal>
-           ${modal}
-        </#list>
+<#list modals?keys as key>
+	 <!-- 模态框（Modal） -->
+	<div class="modal fade ${key}" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   		<div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+           </div>
+        	<div class="modal-body">
+				<!-- user defined form  -->				
+           			${modals[key]?default("")}        		
+     		</div>  		
+           <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+           </div>
+       	</div>
+   		</div><!-- .modal -->
+ 	</div><!-- .modal finish -->
+ </#list>
     	
 	</div>
+	
 	
    
