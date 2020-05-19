@@ -1,6 +1,7 @@
 package codegen.spark.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,8 +82,12 @@ public class StorageService {
 	
 	public List<String> getJNodeKeys(){
 		List<String > keys = kvDB.getKeys(KVDB.JNODE);
-		return keys;
+		return keys;	
+	}
 	
+	public Map<String,String> getAllJNodes(){
+		Map<String,String> map = kvDB.getAll(KVDB.JNODE);
+		return map;	
 	}
 
 }

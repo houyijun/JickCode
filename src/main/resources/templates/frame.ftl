@@ -26,7 +26,7 @@
 	
 	<div class="container" style="margin-top:60px;">
 		<div class="row">
-			<#include "/spark.ftl">
+			<#include "${divname}">
 		</div>
 	</div>
 </body>

@@ -25,15 +25,15 @@ public class SparkMain {
 	static String templatefile = "src/main/resources/model/spark.ftl";
 	static String outfile = "src/main/resources/class/Example.scala";
 
-	public static void main(String[] args) throws Exception {
-		JRoot sparkRoot = getSparkRootNode(configfile);
-		
-		String toCode = JRootDecode.toCode(sparkRoot);
-		LOG.info("jnode code:{}",toCode);
-		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("code_generated",toCode);
-		FreeMakerUtil.Ftl2File(map, templatefile, outfile);
-	}
+//	public static void main(String[] args) throws Exception {
+//		JRoot sparkRoot = getSparkRootNode(configfile);
+//		
+//		String toCode = JRootDecode.toCode(sparkRoot);
+//		LOG.info("jnode code:{}",toCode);
+//		Map<String,Object> map =new HashMap<String,Object>();
+//		map.put("code_generated",toCode);
+//		FreeMakerUtil.Ftl2File(map, templatefile, outfile);
+//	}
 
 	
 	/**

@@ -46,11 +46,11 @@ public class JnodeController {
 		return "uploadJnode";
 	}
 	
-	@RequestMapping(value = { "uploadform" })
-	public String jnode_uploadForm(Map<String, Object> map) {
-		map.put("jnodename","map");
-		return "uploadJnode";
-	}
+//	@RequestMapping(value = { "uploadform" })
+//	public String jnode_uploadForm(Map<String, Object> map) {
+//		map.put("jnodename","map");
+//		return "uploadJnode";
+//	}
 	
 	@RequestMapping(value = { "uploadform/{jnodename}" })
 	public String jnode_uploadForm_path(@PathVariable String jnodename,Map<String, Object> map) {

@@ -1,17 +1,17 @@
 
  	<div class="view">
     	<ul class="btn-group nav pull-right">
-        	<li class="btn btn-info"  onclick="postsvg(dragData)">Save</li>
-        	<li class="btn btn-info"  onclick="getsvg()">Load</li>
-        	<li class="btn btn-info"  onclick="window.open('/svg/output/spark1','_blank');">Output..</li>
+        	<li class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</li>
+        	<li class="btn btn-info"  onclick="getsvg('${svgname}')">Load</li>
+        	<li class="btn btn-info"  onclick="window.open('/svg/output/${svgname}','_blank');">Export</li>
         </ul>
      </div>
        
      <div class="view">
         <ul class="shuiguo btn-group">
-            <li draggable="true" class="btn btn-default" data-name="sourceFile">sourceFile</li>
-            <li draggable="true" class="btn btn-default"  data-name="map">map</li>
-            <li draggable="true"  class="btn btn-default" data-name="sinkFile">sinkFile</li>
+        <#list names as name>
+           <li draggable="true" class="btn btn-default" data-name="${name}">${name}</li>
+        </#list>
         </ul>
      </div>
         
@@ -23,7 +23,6 @@
         <script type="text/javascript">
             var dragData = [];
             var mapData = new Object();
-            var svgName = "spark1";
             //重置拖拽后流程图展示
             function reload(isend) {
                 $(function() {
@@ -382,7 +381,7 @@
                 }
             }
             
-            function postsvg(dragData){
+            function postsvg(svgname,dragData){
             	//$.each(dragData,function(index,value){
      			//	console.log("#nodeId:",value.id);
      			//	saveSourceFileDialog(value.id);
@@ -398,7 +397,7 @@
         			url:"/svg/postSvg",
         			type:"post",
         			dataType:"json",
-        			data:{svgName:svgName,svg:JSON.stringify(target)},
+        			data:{svgName:svgname,svg:JSON.stringify(target)},
         			success:function(res){
                     	console.log(res);                  
             		}
@@ -423,12 +422,12 @@
   				});
 			}
             
-            function getsvg(){
+            function getsvg(svgname){
             	$.ajax({
         			url:"/svg/getSvg",
         			type:"get",
         			dataType:"json",
-        			data:{svgName:svgName},
+        			data:{svgName:svgname},
         			success:function(res){
         				console.log(res.data);
         				var svg=eval('(' + res.data + ')');        				
@@ -488,9 +487,10 @@
 	<div id="spark-canvas"></div>
 	
 	<div id="spark-model" style="display:none;">
-    	<#include "spark/sourceFile.ftl">
-    	<#include "spark/map.ftl">
-    	<#include "spark/sinkFile.ftl">
+	 	<#list modals as modal>
+           ${modal}
+        </#list>
+    	
 	</div>
 	
    

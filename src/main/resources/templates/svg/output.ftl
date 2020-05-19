@@ -27,7 +27,7 @@
 	<div class="container" style="margin-top:60px;">
 		<div class="row">
 			<span class="help-block" contenteditable="true">Code of [${svg}]</span>
-			<textarea id="data" name="data" class="form-control" >${code}</textarea>
+			<textarea id="data" name="data" rows="20" class="form-control" >${code}</textarea>
 		
 		</div>
 	</div>
