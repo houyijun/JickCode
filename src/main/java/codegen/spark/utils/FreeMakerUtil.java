@@ -1,6 +1,7 @@
 package codegen.spark.utils;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -14,8 +15,9 @@ import freemarker.template.Template;
 
 public class FreeMakerUtil {
 	
-	public static String outFtl(Map<String, Object> beanMap,String file_ftl) throws Exception{
+	public static String outFtl(Map<String, Object> beanMap,String rootPath,String file_ftl) throws Exception{
 		Configuration config = new Configuration();
+		config.setDirectoryForTemplateLoading(new File(rootPath));
 		config.setObjectWrapper(new DefaultObjectWrapper());
 		Template template = config.getTemplate(file_ftl, "UTF-8");
 		StringWriter writer = new StringWriter();
@@ -32,10 +34,11 @@ public class FreeMakerUtil {
 	 * @param file_out
 	 * @throws Exception
 	 */
-	public static void Ftl2File(Map<String, Object> beanMap,String file_ftl,String file_out) throws Exception{
+	public static void Ftl2File(Map<String, Object> beanMap,String rootPath,String file_ftl,String file_out) throws Exception{
 //		Configuration config = new Configuration(Configuration.getVersion());
 //		config.setObjectWrapper(new DefaultObjectWrapper(Configuration.getVersion()));
 		Configuration config = new Configuration();
+		config.setDirectoryForTemplateLoading(new File(rootPath));
 		config.setObjectWrapper(new DefaultObjectWrapper());
 		Template template = config.getTemplate(file_ftl, "UTF-8");
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file_out), "UTF-8"));

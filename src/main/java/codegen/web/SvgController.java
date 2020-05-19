@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
+import codegen.spark.service.FileService;
 import codegen.spark.service.JickCodeService;
 import codegen.spark.service.StorageService;
 
@@ -31,6 +32,9 @@ public class SvgController {
 
 	@Autowired
 	StorageService storageService;
+	
+	@Autowired
+	FileService fileService;
 
 	@Autowired
 	JickCodeService jickCodeService;
@@ -62,6 +66,8 @@ public class SvgController {
 	public String all(Map<String, Object> map) {
 		List<String> jnodeNames = storageService.getSvgKeys();
 		map.put("svglist", jnodeNames);
+		List<String> codetypes=fileService.getTemplateFiles(FileController.path,FileService.SUFFIX);
+		map.put("codetypes", codetypes);
 		return "/svg/all";
 	}
 
@@ -76,23 +82,32 @@ public class SvgController {
 	}
 
 	/**
-	 * edit,new 暂时未使用
+	 * 打开新建form
 	 * 
-	 */
-
+	 */	
 	@RequestMapping(value = { "new" })
-	public String newSvg(Map<String, Object> map) {
-		map.put("jnodename", "");
-		map.put("dialog", "");
-		map.put("ftl", "");
-		return "uploadJnode";
+	public String newSvg( Map<String, Object> map) {
+		map.put("divname", "/svg/new.ftl");
+		return "/frame";
+	}
+	@RequestMapping(value = "add.do", method = { RequestMethod.POST })
+	@ResponseBody
+	public String add_svg(HttpServletRequest request) {
+		String name = request.getParameter("name");
+		String svg = storageService.getSvgJson(name);
+		if (svg==null) {
+			return getJsonResp("1", "duplicated svg name", null).toJSONString();
+			
+		}
+		storageService.putSvgJson(name, "{\"chart\":\"\"}");
+		JSONObject ret = getJsonResp("0", "SUCCESS", null);
+		return ret.toJSONString();
 	}
 
 	@RequestMapping(value = { "edit/{svgname}" })
 	public String editSvg(@PathVariable String svgname, Map<String, Object> map) {
 		map.put("svgname", svgname);
 		map.put("divname", "/svg/edit.ftl");
-
 		Map<String, String> nodes = storageService.getAllJNodes();
 		List<String> names = new ArrayList<String>();
 		Map<String,String> modelMap=new HashMap<String,String>();

@@ -19,7 +19,12 @@
 			<td>${node_index+1}</td>
             <td>${node!''}</td>
             <td><span><a href="/svg/edit/${node}">Edit</a></span>
-            <span><a onclick="del('${node}');">Delete</a></span></td>
+            <span><a onclick="del('${node}');">Delete</a></span>
+            <span>Export:</span>
+            <#list codetypes as codetype>
+            <span><a href="/file/export/${node}/${codetype}">${codetype}</a></span>
+            </#list>
+            </td>
       <tr>
 	  </#list>
 
