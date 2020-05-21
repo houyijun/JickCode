@@ -13,6 +13,8 @@ public class KVDB {
 	
 	public static  final  String SVG="spark";
 	public static  final String JNODE="jnode";
+	public static  final String MODEL="model";
+	
 	private final String dbFilePath = "C:\\github\\data\\spark.db";
 	
 	
@@ -29,6 +31,9 @@ public class KVDB {
 			}
 			if (!KVSqlliteUtil.isTableExist(con, JNODE)) {
 				KVSqlliteUtil.createTable(con, JNODE);
+			}
+			if (!KVSqlliteUtil.isTableExist(con, MODEL)) {
+				KVSqlliteUtil.createTable(con, MODEL);
 			}
 		}
 

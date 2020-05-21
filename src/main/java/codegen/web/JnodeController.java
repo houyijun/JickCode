@@ -84,7 +84,7 @@ public class JnodeController {
 		String jnodeData=json.toJSONString();
 		LOG.info("###uploadJnode name={},jnodeData={}", name,jnodeData);
 		storageService.putJNode(name, jnodeData);
-		JSONObject ret = getJsonResp("0", "SUCCESS", null);
+		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
 		return ret.toJSONString();
 	}
 	
@@ -93,19 +93,9 @@ public class JnodeController {
 	public String deleteJnode(HttpServletRequest request) {
 		String node = request.getParameter("node");
 		boolean success=storageService.delJNode(node);
-
-		JSONObject json = getJsonResp("0", "SUCCESS", String.valueOf(success));
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}
 	
 	
-	private JSONObject getJsonResp(String code, String msg, Object data) {
-		JSONObject json = new JSONObject();
-		json.put("code", code);
-		json.put("msg", msg);
-		if (data != null) {
-			json.put("data", data);
-		}
-		return json;
-	}
 }

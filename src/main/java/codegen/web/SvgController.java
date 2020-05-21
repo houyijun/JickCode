@@ -77,7 +77,7 @@ public class SvgController {
 		String node = request.getParameter("node");
 		boolean success = storageService.delSvgNode(node);
 
-		JSONObject json = getJsonResp("0", "SUCCESS", String.valueOf(success));
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}
 
@@ -96,11 +96,11 @@ public class SvgController {
 		String name = request.getParameter("name");
 		String svg = storageService.getSvgJson(name);
 		if (svg==null) {
-			return getJsonResp("1", "duplicated svg name", null).toJSONString();
+			return Funcs.getJsonResp("1", "duplicated svg name", null).toJSONString();
 			
 		}
 		storageService.putSvgJson(name, "{\"chart\":\"\"}");
-		JSONObject ret = getJsonResp("0", "SUCCESS", null);
+		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
 		return ret.toJSONString();
 	}
 
@@ -142,7 +142,7 @@ public class SvgController {
 		LOG.info("###postSvg name={},svg={}", svgName, svg);
 		storageService.putSvgJson(svgName, svg);
 
-		JSONObject json = getJsonResp("0", "SUCCESS", null);
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", null);
 		return json.toJSONString();
 	}
 
@@ -164,13 +164,5 @@ public class SvgController {
 		}
 	}
 
-	private JSONObject getJsonResp(String code, String msg, Object data) {
-		JSONObject json = new JSONObject();
-		json.put("code", code);
-		json.put("msg", msg);
-		if (data != null) {
-			json.put("data", data);
-		}
-		return json;
-	}
+	
 }

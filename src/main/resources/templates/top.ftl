@@ -22,7 +22,7 @@
 			<li class="menu-spark">			
 				<span   onClick="location.href='/svg/all'">Projects</span>
 				<span   onClick="location.href='/jnode/all'">Jnodes</span>
-				
+				<span   onClick="location.href='/model/all'">Models</span>
 				
 		
 				<div class="btn-group hidden" data-toggle="buttons-radio">
