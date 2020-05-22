@@ -35,11 +35,6 @@ public class ModelController {
 	@Autowired
 	KVDB kvDB;
 	
-	@RequestMapping(value = { "import" })
-	public String importModel(Map<String, Object> map) {
-		map.put("divname", "/model/import.ftl");
-		return "/frame";
-	}
 
 	// 导入
 	@RequestMapping("import.do")
@@ -48,7 +43,6 @@ public class ModelController {
 		try {
 			String modelname = request.getParameter("name");
 			String modelfile = new String(file.getBytes());
-			String modelcontent= request.getParameter("modelcontent");
 			LOG.info("上传名称={},文件内容={}",modelname,modelfile);
 			kvDB.saveOrUpdate(KVDB.MODEL,modelname,modelfile);
 
@@ -58,10 +52,19 @@ public class ModelController {
 		return "ok";
 	}
 
-	@RequestMapping("exportcode")
-	public void exportCode(HttpServletResponse response) {
-		String outFile="example.code";
-		Funcs.exportCodeFile(response,outFile,"hello code" );
+	/**
+	 * 下载模板文件内容
+	 * @param name
+	 * @param response
+	 */
+	@RequestMapping("download")
+	public void download(String name,HttpServletResponse response) {
+		String outFile=name+".java";
+		String modelcontent=kvDB.get(KVDB.MODEL,name);
+		if (modelcontent==null) {
+			modelcontent="null";
+		}
+		Funcs.exportCodeFile(response,outFile,modelcontent );
 	}
 	
 	/**
@@ -78,6 +81,7 @@ public class ModelController {
 		map.put("modelcontent",kvDB.get(KVDB.MODEL,modelname));
 		return "/frame";
 	}
+	
 	
 	@RequestMapping(value = "delete", method = { RequestMethod.POST })
 	@ResponseBody
@@ -96,10 +100,13 @@ public class ModelController {
 		return "/frame";
 	}
 	
-	@RequestMapping(value = { "new" })
-	public String newModel(Map<String, Object> map) {
-		map.put("divname", "/model/edit.ftl");
-		return "/frame";
+	@RequestMapping(value = "add", method = { RequestMethod.POST })
+	@ResponseBody
+	public String add(HttpServletRequest request) {
+		String node = request.getParameter("name");
+		kvDB.saveOrUpdate(KVDB.MODEL,node,"");
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", "");
+		return json.toJSONString();
 	}
 	
 

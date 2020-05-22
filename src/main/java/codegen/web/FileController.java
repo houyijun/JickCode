@@ -20,11 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import codegen.spark.db.KVDB;
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
 import codegen.spark.service.FileService;
 import codegen.spark.service.JickCodeService;
-import codegen.spark.service.StorageService;
 import codegen.spark.utils.FreeMakerUtil;
 
 /**
@@ -41,7 +41,7 @@ public class FileController {
 	public static String path = "c:/github/houyijun";
 
 	@Autowired
-	StorageService storageService;
+	KVDB kvDB;
 
 	@Autowired
 	JickCodeService jickCodeService;
@@ -55,7 +55,7 @@ public class FileController {
 		map.put("codetype", codetype);
 		map.put("svg", svg);
 
-		String svgJson = storageService.querySvgJson(svg);
+		String svgJson =kvDB.get(KVDB.SVG,svg);
 		JSONObject json = JSONObject.parseObject(svgJson);
 		JSONArray chart = (JSONArray) json.get("chart");
 

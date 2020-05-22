@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import codegen.spark.db.KVDB;
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
 import freemarker.template.Configuration;
@@ -27,9 +28,8 @@ import freemarker.template.Template;
 public class JickCodeService {
 	private static final Logger LOG = LoggerFactory.getLogger(JickCodeService.class);
 
-
 	@Autowired
-	StorageService storageService;
+	KVDB kvDB;
 
 	/**
 	 * 从字符串读取template，输出转换后的结果字符串
@@ -93,7 +93,7 @@ public class JickCodeService {
 			LOG.error("jnode名称为空");
 			return null;
 		}
-		String jnodeModel = storageService.getJNode(jnodeName);
+		String jnodeModel =kvDB.get(KVDB.JNODE,jnodeName);
 
 		 JSONObject jnodeObj = JSONObject.parseObject(jnodeModel);
 		String ftlText = (String)jnodeObj.get("ftl");

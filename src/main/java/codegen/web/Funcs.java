@@ -45,7 +45,7 @@ public class Funcs {
 			// 响应输出流，让用户自己选择保存路径
 			response.setCharacterEncoding("UTF-8");
 			response.reset();// 清除缓存
-			response.setContentType("octets/stream");
+//			response.setContentType("octets/stream");
 			response.addHeader("Content-Disposition", "attachment;filename=" + filename);
 			fos = response.getOutputStream();
 

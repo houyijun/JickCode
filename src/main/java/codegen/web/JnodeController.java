@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 
+import codegen.spark.db.KVDB;
 import codegen.spark.service.JickCodeService;
-import codegen.spark.service.StorageService;
 
 @Controller
 @RequestMapping("/jnode")
@@ -26,36 +26,34 @@ public class JnodeController {
 	private static final Logger LOG = LoggerFactory.getLogger(JnodeController.class);
 
 	@Autowired
-	StorageService storageService;
+	KVDB kvDB;
 
 	@Autowired
 	JickCodeService jickCodeService;
 
 	@RequestMapping(value = { "all" })
 	public String jnodes(Map<String, Object> map) {
-		List<String> jnodeNames=storageService.getJNodeKeys();
+		map.put("divname", "/jnode/all.ftl");
+		List<String> jnodeNames=kvDB.getKeys(KVDB.JNODE);//storageService.getJNodeKeys();
 		map.put("jnodelist",jnodeNames);
-		return "/jnode/jnodes";
+		return "/frame";
 	}
 	
 	@RequestMapping(value = { "new" })
 	public String jnode_new(Map<String, Object> map) {
+		map.put("divname", "/jnode/addjnode.ftl");
 		map.put("jnodename","");
 		map.put("dialog","");
 		map.put("ftl","");
-		return "uploadJnode";
+		return "/frame";
 	}
 	
-//	@RequestMapping(value = { "uploadform" })
-//	public String jnode_uploadForm(Map<String, Object> map) {
-//		map.put("jnodename","map");
-//		return "uploadJnode";
-//	}
 	
 	@RequestMapping(value = { "uploadform/{jnodename}" })
 	public String jnode_uploadForm_path(@PathVariable String jnodename,Map<String, Object> map) {
+		map.put("divname", "/jnode/addjnode.ftl");
 		map.put("jnodename",jnodename);
-		String json = storageService.getJNode(jnodename);
+		String json =kvDB.get(KVDB.JNODE, jnodename);//storageService.getJNode(jnodename);
 		
 		LOG.info("jnode内容:{}",json);
 		if (StringUtils.isNotEmpty(json)) {
@@ -63,7 +61,8 @@ public class JnodeController {
 			map.put("ftl",jnode.get("ftl"));
 			map.put("dialog",jnode.get("dialog"));
 		}
-		return "uploadJnode";
+		
+		return "/frame";
 	}
 	
 	/**
@@ -83,7 +82,7 @@ public class JnodeController {
 		json.put("dialog",props);
 		String jnodeData=json.toJSONString();
 		LOG.info("###uploadJnode name={},jnodeData={}", name,jnodeData);
-		storageService.putJNode(name, jnodeData);
+		kvDB.saveOrUpdate(KVDB.JNODE, name,jnodeData);
 		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
 		return ret.toJSONString();
 	}
@@ -92,7 +91,7 @@ public class JnodeController {
 	@ResponseBody
 	public String deleteJnode(HttpServletRequest request) {
 		String node = request.getParameter("node");
-		boolean success=storageService.delJNode(node);
+		boolean success=kvDB.del(KVDB.JNODE,node);
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}

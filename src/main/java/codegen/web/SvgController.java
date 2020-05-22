@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import codegen.spark.db.KVDB;
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
 import codegen.spark.service.FileService;
 import codegen.spark.service.JickCodeService;
-import codegen.spark.service.StorageService;
 
 @Controller
 @RequestMapping("/svg")
 public class SvgController {
 	private static final Logger LOG = LoggerFactory.getLogger(SvgController.class);
-
+	
 	@Autowired
-	StorageService storageService;
+	KVDB kvDB;
 	
 	@Autowired
 	FileService fileService;
@@ -41,7 +41,7 @@ public class SvgController {
 
 	@RequestMapping(value = { "output/{svg}" })
 	public String outputSvg(@PathVariable String svg, Map<String, Object> map) {
-		String svgJson = storageService.querySvgJson(svg);
+		String svgJson =kvDB.get(KVDB.SVG,svg);
 		JSONObject json = JSONObject.parseObject(svgJson);
 		JSONArray chart = (JSONArray) json.get("chart");
 
@@ -64,51 +64,43 @@ public class SvgController {
 
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
-		List<String> jnodeNames = storageService.getSvgKeys();
+		map.put("divname", "/svg/all.ftl");
+		List<String> jnodeNames =kvDB.getKeys(KVDB.SVG);
 		map.put("svglist", jnodeNames);
 		List<String> codetypes=fileService.getTemplateFiles(FileController.path,FileService.SUFFIX);
 		map.put("codetypes", codetypes);
-		return "/svg/all";
+		return "/frame";
 	}
 
 	@RequestMapping(value = "delete", method = { RequestMethod.POST })
 	@ResponseBody
-	public String deleteJnode(HttpServletRequest request) {
+	public String delete(HttpServletRequest request) {
 		String node = request.getParameter("node");
-		boolean success = storageService.delSvgNode(node);
+		boolean success =kvDB.del(KVDB.SVG,node);
 
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}
 
-	/**
-	 * 打开新建form
-	 * 
-	 */	
-	@RequestMapping(value = { "new" })
-	public String newSvg( Map<String, Object> map) {
-		map.put("divname", "/svg/new.ftl");
-		return "/frame";
-	}
 	@RequestMapping(value = "add.do", method = { RequestMethod.POST })
 	@ResponseBody
-	public String add_svg(HttpServletRequest request) {
+	public String add(HttpServletRequest request) {
 		String name = request.getParameter("name");
-		String svg = storageService.getSvgJson(name);
+		String svg = getSvgJson(name);
 		if (svg==null) {
 			return Funcs.getJsonResp("1", "duplicated svg name", null).toJSONString();
 			
 		}
-		storageService.putSvgJson(name, "{\"chart\":\"\"}");
+		kvDB.saveOrUpdate(KVDB.SVG,name, "{\"chart\":\"\"}");
 		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
 		return ret.toJSONString();
 	}
 
 	@RequestMapping(value = { "edit/{svgname}" })
-	public String editSvg(@PathVariable String svgname, Map<String, Object> map) {
+	public String edit(@PathVariable String svgname, Map<String, Object> map) {
 		map.put("svgname", svgname);
 		map.put("divname", "/svg/edit.ftl");
-		Map<String, String> nodes = storageService.getAllJNodes();
+		Map<String, String> nodes =kvDB.getAll(KVDB.JNODE);
 		List<String> names = new ArrayList<String>();
 		Map<String,String> modelMap=new HashMap<String,String>();
 		for (String key : nodes.keySet()) {
@@ -140,7 +132,7 @@ public class SvgController {
 		String svgName = request.getParameter("svgName");
 		String svg = request.getParameter("svg");
 		LOG.info("###postSvg name={},svg={}", svgName, svg);
-		storageService.putSvgJson(svgName, svg);
+		kvDB.saveOrUpdate(KVDB.SVG,	svgName, svg);
 
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", null);
 		return json.toJSONString();
@@ -155,7 +147,7 @@ public class SvgController {
 	@RequestMapping(value = "getSvg", method = { RequestMethod.GET })
 	@ResponseBody
 	public String getSvg(String svgName) {
-		String json = storageService.getSvgJson(svgName);
+		String json = getSvgJson(svgName);
 		LOG.info("###query svgname={},svg={}", svgName, json);
 		if (json!=null) {
 			return json;
@@ -164,5 +156,18 @@ public class SvgController {
 		}
 	}
 
+	
+	private String getSvgJson(String svgName) {
+		String value = kvDB.get(KVDB.SVG,svgName);
+		JSONObject json = new JSONObject();
+		json.put("code", "0");
+		json.put("msg", "SUCCESS");
+		if (value != null) {
+			json.put("data", value);
+		} else {
+			json.put("data", "no svg");
+		}
+		return json.toJSONString();
+	}
 	
 }
