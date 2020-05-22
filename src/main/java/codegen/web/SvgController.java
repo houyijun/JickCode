@@ -41,6 +41,7 @@ public class SvgController {
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
 		map.put("divname", "/svg/all.ftl");
+		map.put("menu","projects");
 		List<String> jnodeNames =kvDB.getKeys(KVDB.SVG);
 		map.put("svglist", jnodeNames);
 		List<String> codetypes=kvDB.getKeys(KVDB.MODEL);
@@ -76,6 +77,8 @@ public class SvgController {
 	public String edit(@PathVariable String svgname, Map<String, Object> map) {
 		map.put("svgname", svgname);
 		map.put("divname", "/svg/edit.ftl");
+		String json = getSvgJson(svgname);
+		map.put("initdata", json);
 		Map<String, String> nodes =kvDB.getAll(KVDB.JNODE);
 		List<String> names = new ArrayList<String>();
 		Map<String,String> modelMap=new HashMap<String,String>();

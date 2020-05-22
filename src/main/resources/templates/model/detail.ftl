@@ -1,4 +1,5 @@
 <div class="view">
+<span><a class="text-primary" href="/model/edit/${modelname}">Modify</a></span>
 <span><a href="/model/download?name=${modelname}">Download</a></span>  
 </div>
 <label contenteditable="true">${modelname!''}</label>

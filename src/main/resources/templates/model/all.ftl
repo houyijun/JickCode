@@ -19,7 +19,6 @@
             <td><a href="/model/detail/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
-            <li><a href="/model/edit/${node}"><i class="glyphicon glyphicon-edit text-info" ></i></a></li>
             <li><a onclick="del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>  </li>
              
              </ul>        

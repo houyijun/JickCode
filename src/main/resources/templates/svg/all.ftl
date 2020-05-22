@@ -20,9 +20,9 @@
             <td>
             <ul class="list-unstyled list-inline">
             <li><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a></li>
-            <li><i class="glyphicon glyphicon-new-window"></i>
+            <li>
             <#list codetypes as codetype>
-            <a href="/svg/export/${node}/${codetype}">${codetype}</a>
+            <span><a class="text-muted" href="/svg/export/${node}/${codetype}"><i class="glyphicon glyphicon-new-window" ></i>${codetype}</a></span>
             </#list>
             </li>
             

@@ -1,15 +1,17 @@
-
+<input id="svgname" value="${svgname}" class="hidden"></input>
  	<div class="view">
     	<ul class="btn-group nav pull-right">
-        	<li class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</li>
-        	<li class="btn btn-info"  onclick="getsvg('${svgname}')">Load</li>
+        	<li><span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</span>
+        	<span  class="btn btn-info"  onclick="getsvg('${svgname}')">Load</span>
+        	<span  class="btn btn-info"  onclick="test('${svgname}')">test</span>
+        	</li>
         </ul>
      </div>
        
      <div class="view">
         <ul class="shuiguo btn-group">
         <#list names as name>
-           <li draggable="true" class="btn btn-default" data-name="${name}">${name}</li>
+           <li draggable="true" class="btn btn-primary" data-name="${name}">${name}</li>
         </#list>
         </ul>
      </div>
@@ -420,6 +422,20 @@
 					$(this).val(mydata.props[$(this).attr('name')]);
   				});
 			}
+			
+			function test(res){
+				console.log("#initdata:",res);
+				var svg=eval('(' + res.data + ')');  
+				dragData=svg.chart;
+                    	mapData=svg.chart;
+                    	reload(1);
+                    	$("#spark-canvas").empty();
+                    	 //load node property dialog 
+                    	for(var i = 0; i < dragData.length; i++) {
+                    		newnode(dragData[i].label,dragData[i].id);
+                    		loadNodeProperties(dragData[i].id,dragData);
+                   	 	}
+			}
             
             function getsvg(svgname){
             	$.ajax({
@@ -433,7 +449,11 @@
         					return;
         				}	
         				console.log(res.data);
-        				var svg=eval('(' + res.data + ')');        				
+        				var svg=eval('(' + res.data + ')');    
+        				if (svg.chart == null || svg.chart == undefined || svg.chart == '') {
+        					console.log("#svg is null");
+        					return;
+        				}    				
                     	dragData=svg.chart;
                     	mapData=svg.chart;
                     	reload(1);
@@ -484,6 +504,14 @@
                 }
                 console.log('mouse up!');
             })
+            
+            $(document).ready(function(){
+ 				console.log("#init func");
+ 				var id = $("#svgname").val();
+				getsvg(id);				
+ 
+			});
+
         </script>
         </#noparse>
         	
