@@ -72,7 +72,6 @@ public class JnodeController {
 	 * @return
 	 */
 	@RequestMapping(value = "uploadJnode", method = { RequestMethod.POST })
-	@ResponseBody
 	public String uploadJnode(HttpServletRequest request) {
 		String name = request.getParameter("name");
 		String data = request.getParameter("data");
@@ -84,7 +83,8 @@ public class JnodeController {
 		LOG.info("###uploadJnode name={},jnodeData={}", name,jnodeData);
 		kvDB.saveOrUpdate(KVDB.JNODE, name,jnodeData);
 		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
-		return ret.toJSONString();
+//		return ret.toJSONString();
+		return "forward:/jnode/all";
 	}
 	
 	@RequestMapping(value = "delete", method = { RequestMethod.POST })

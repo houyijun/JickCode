@@ -1,7 +1,7 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建</i></a>
+		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
-	<div class="preview">SVG List</div>
+	<div class="preview">Project List...</div>
 <div class="view">
   <table class="table" contenteditable="false">
       <thead>
@@ -16,13 +16,17 @@
       <#list svglist as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td>${node!''}</td>
-            <td><span><a href="/svg/edit/${node}">Edit</a></span>
-            <span><a onclick="del('${node}');">Delete</a></span>
-            <span>Export:</span>
+            <td><a href="/svg/edit/${node}">${node!''}</a></td>
+            <td>
+            <ul class="list-unstyled list-inline">
+            <li><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a></li>
+            <li><i class="glyphicon glyphicon-new-window"></i>
             <#list codetypes as codetype>
-            <span><a href="/file/export/${node}/${codetype}">${codetype}</a></span>
+            <a href="/svg/export/${node}/${codetype}">${codetype}</a>
             </#list>
+            </li>
+            
+            </ul>
             </td>
       <tr>
 	  </#list>

@@ -1,5 +1,5 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建</i></a>
+		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
 	<div class="preview">Model List</div>
 <div class="view">
@@ -16,10 +16,13 @@
       <#list nodes as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td>${node!''}</td>
-            <td><span><a href="/model/edit/${node}">Edit</a></span>
-            <span><a onclick="del('${node}');">Delete</a></span>  
-             <span><a href="/model/download?name=${node}">Download</a></span>          
+            <td><a href="/model/detail/${node}">${node!''}</a></td>
+            <td>
+            <ul class="list-unstyled list-inline">
+            <li><a href="/model/edit/${node}"><i class="glyphicon glyphicon-edit text-info" ></i></a></li>
+            <li><a onclick="del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>  </li>
+             
+             </ul>        
             </td>
       <tr>
 	  </#list>
@@ -63,9 +66,10 @@ function submit(){
         			success:function(res){
                     	console.log(res);
                     	if (res.code=="0"){
-                    	window.location.reload();
+                    		window.location.reload();
                     	}else{
-                    	alert(res.msg);
+                    		alert(res.msg);
+    
                     	}                  
             		}
     			});

@@ -3,7 +3,6 @@
     	<ul class="btn-group nav pull-right">
         	<li class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</li>
         	<li class="btn btn-info"  onclick="getsvg('${svgname}')">Load</li>
-        	<li class="btn btn-info"  onclick="window.open('/svg/output/${svgname}','_blank');">Export</li>
         </ul>
      </div>
        

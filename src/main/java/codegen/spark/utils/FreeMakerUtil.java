@@ -15,6 +15,29 @@ import freemarker.template.Template;
 
 public class FreeMakerUtil {
 	
+	/**
+	 * 从字符串导入ftl文本
+	 * 
+	 * @param beanMap
+	 * @param templcate
+	 * @return
+	 * @throws Exception
+	 */
+	public static String outStringFtl(Map<String, Object> beanMap,String templcate) throws Exception{
+		Configuration config = new Configuration();
+		config.setObjectWrapper(new DefaultObjectWrapper());
+		
+		StringWriter stringWriter = new StringWriter();
+		Template template = new Template("template", templcate, config);
+		
+		StringWriter writer = new StringWriter();
+		template.process(beanMap, writer);
+		writer.flush();
+		String ret=writer.toString();
+		writer.close();
+		return ret;
+	}
+	
 	public static String outFtl(Map<String, Object> beanMap,String rootPath,String file_ftl) throws Exception{
 		Configuration config = new Configuration();
 		config.setDirectoryForTemplateLoading(new File(rootPath));

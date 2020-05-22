@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,8 @@ import com.alibaba.fastjson.JSONObject;
 import codegen.spark.db.KVDB;
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
-import codegen.spark.service.FileService;
 import codegen.spark.service.JickCodeService;
+import codegen.spark.utils.FreeMakerUtil;
 
 @Controller
 @RequestMapping("/svg")
@@ -34,40 +35,15 @@ public class SvgController {
 	KVDB kvDB;
 	
 	@Autowired
-	FileService fileService;
-
-	@Autowired
 	JickCodeService jickCodeService;
 
-	@RequestMapping(value = { "output/{svg}" })
-	public String outputSvg(@PathVariable String svg, Map<String, Object> map) {
-		String svgJson =kvDB.get(KVDB.SVG,svg);
-		JSONObject json = JSONObject.parseObject(svgJson);
-		JSONArray chart = (JSONArray) json.get("chart");
-
-		List<SVGNode> nodes = chart.toJavaList(SVGNode.class);
-		SVG svgobj = new SVG();
-		svgobj.setParams(new HashMap<String, String>());
-		svgobj.setNodes(nodes);
-		String code = "";
-		try {
-			code = jickCodeService.toCode(svgobj);
-		} catch (Exception e) {
-			LOG.error("输出代码异常:{}", e);
-			e.printStackTrace();
-			code = "output code exception!";
-		}
-		map.put("svg", svg);
-		map.put("code", code);
-		return "svg/output";
-	}
 
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
 		map.put("divname", "/svg/all.ftl");
 		List<String> jnodeNames =kvDB.getKeys(KVDB.SVG);
 		map.put("svglist", jnodeNames);
-		List<String> codetypes=fileService.getTemplateFiles(FileController.path,FileService.SUFFIX);
+		List<String> codetypes=kvDB.getKeys(KVDB.MODEL);
 		map.put("codetypes", codetypes);
 		return "/frame";
 	}
@@ -154,6 +130,55 @@ public class SvgController {
 		}else {
 			return "";
 		}
+	}
+	
+	@RequestMapping("download")
+	public void download(String name,String type,HttpServletResponse response) {
+		String outFile=name+"."+type;
+		String code = getCode(name,type);
+		if (code==null) {
+			code="null";
+		}
+		Funcs.exportCodeFile(response,outFile,code );
+	}
+	@RequestMapping(value = { "export/{svg}/{codetype}" })
+	public String export(@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
+		map.put("divname", "/svg/export.ftl");
+		map.put("codetype", codetype);
+		map.put("svg", svg);
+
+		String code = getCode(svg,codetype);
+
+		map.put("code", code);
+		return "/frame";
+	}
+	
+	private String getCode(String name,String type) {
+		String svgJson =kvDB.get(KVDB.SVG,name);
+		JSONObject json = JSONObject.parseObject(svgJson);
+		JSONArray chart = (JSONArray) json.get("chart");
+
+		List<SVGNode> nodes = chart.toJavaList(SVGNode.class);
+		SVG svgobj = new SVG();
+		svgobj.setParams(new HashMap<String, String>());
+		svgobj.setNodes(nodes);
+		String code = "";
+		try {
+			code = jickCodeService.toCode(svgobj);
+
+			Map<String, Object> codemap = new HashMap<String, Object>();
+			codemap.put("code_generated", code);
+			
+			String whole_ftl=kvDB.get(KVDB.MODEL,type);
+			code = FreeMakerUtil.outStringFtl(codemap, whole_ftl);
+
+		} catch (Exception e) {
+			LOG.error("输出代码异常:{}", e);
+			e.printStackTrace();
+			code = "output code exception!";
+		}
+		return code;
+
 	}
 
 	

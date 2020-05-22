@@ -1,6 +1,6 @@
 <form  action="/jnode/uploadJnode" accept-charset="UTF-8" method="post">
    	<fieldset>
-		<legend contenteditable="true">表单项</legend>
+		<legend contenteditable="true">编辑Jnode</legend>
 		<label contenteditable="true">名称</label>
 		<input type="text" placeholder="Type something…" name="name" value="${jnodename}">
 		

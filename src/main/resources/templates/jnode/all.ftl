@@ -1,5 +1,5 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-info" href="/jnode/new" rel="table-hover"><i class="glyphicon glyphicon-plus">New</i></a>
+		<a class="btn btn-sm btn-info" href="/jnode/new" rel="table-hover"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
 	<div class="preview">Jnode List</div>
 <div class="view">
@@ -16,9 +16,14 @@
       <#list jnodelist as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td>${node!''}</td>
-            <td><span><a href="/jnode/uploadform/${node}">Edit</a></span>
-            <span><a onclick="deljnode('${node}');">Delete</a></span></td>
+            <td><a href="/jnode/uploadform/${node}">${node!''}</a></td>
+            <td>
+            
+            <ul class="list-unstyled list-inline">
+            <li><a onclick="deljnode('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>  </li>
+             </ul>   
+             
+            </td>
       <tr>
 	  </#list>
 

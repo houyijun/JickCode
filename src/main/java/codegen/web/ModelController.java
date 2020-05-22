@@ -59,7 +59,7 @@ public class ModelController {
 	 */
 	@RequestMapping("download")
 	public void download(String name,HttpServletResponse response) {
-		String outFile=name+".java";
+		String outFile=name+".txt";
 		String modelcontent=kvDB.get(KVDB.MODEL,name);
 		if (modelcontent==null) {
 			modelcontent="null";
@@ -77,6 +77,14 @@ public class ModelController {
 	@RequestMapping(value = { "edit/{modelname}" })
 	public String edit(@PathVariable String modelname,Map<String, Object> map) {
 		map.put("divname", "/model/edit.ftl");
+		map.put("modelname", modelname);
+		map.put("modelcontent",kvDB.get(KVDB.MODEL,modelname));
+		return "/frame";
+	}
+	
+	@RequestMapping(value = { "detail/{modelname}" })
+	public String detail(@PathVariable String modelname,Map<String, Object> map) {
+		map.put("divname", "/model/detail.ftl");
 		map.put("modelname", modelname);
 		map.put("modelcontent",kvDB.get(KVDB.MODEL,modelname));
 		return "/frame";
