@@ -1,10 +1,9 @@
 
 <form  enctype="multipart/form-data" action="/jnode/import.do" accept-charset="UTF-8" method="post">
    	<fieldset>
-		<label contenteditable="true">[Import]</label>
         <h3>Uploading jnodes file</h3>
         <div class="file-loading">
-         <input id="file-0c" class="file" name="filename" type="file"   data-theme="fas">
+         <input id="file-0c" class="file" name="filename" type="file"  data-show-preview="false" data-theme="fas">
   		</div>
 		
 		<button type="submit" class="btn" contenteditable="true">提交</button>

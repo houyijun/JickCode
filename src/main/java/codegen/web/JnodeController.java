@@ -52,9 +52,9 @@ public class JnodeController {
 	}
 	
 	
-	@RequestMapping(value = { "uploadform/{jnodename}" })
-	public String jnode_uploadForm_path(@PathVariable String jnodename,Map<String, Object> map) {
-		map.put("divname", "/jnode/addjnode.ftl");
+	@RequestMapping(value = { "edit/{jnodename}" })
+	public String edit(@PathVariable String jnodename,Map<String, Object> map) {
+		map.put("divname", "/jnode/edit.ftl");
 		map.put("jnodename",jnodename);
 		String json =kvDB.get(KVDB.JNODE, jnodename);
 		
@@ -73,8 +73,8 @@ public class JnodeController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "uploadJnode", method = { RequestMethod.POST })
-	public String uploadJnode(HttpServletRequest request) {
+	@RequestMapping(value = "edit.do", method = { RequestMethod.POST })
+	public String edit_do(HttpServletRequest request) {
 		String name = request.getParameter("name");
 		String data = request.getParameter("data");
 		String props = request.getParameter("propdialog");
@@ -110,6 +110,26 @@ public class JnodeController {
 		String code = JSONObject.toJSONString(nodes);		
 		Funcs.exportCodeFile(response,outFile,code );
 	}
+	
+	/**
+	 * 导出单个Jnode
+	 * @param response
+	 */
+	@RequestMapping("downsingle")
+	public void downsingle(HttpServletRequest request,HttpServletResponse response) {
+		String node = request.getParameter("node");		
+		String outFile=node+".txt";
+		
+		String txt =kvDB.get(KVDB.JNODE,node);
+		if (txt==null) {
+			txt="";
+		}
+		JSONObject json =new JSONObject();
+		json.put(node, txt);
+		String code = JSONObject.toJSONString(json);		
+		Funcs.exportCodeFile(response,outFile,code );
+	}
+	
 	
 	
 	@RequestMapping(value = { "import" })

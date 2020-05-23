@@ -27,11 +27,15 @@
       <#list jnodelist as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td><a href="/jnode/uploadform/${node}">${node!''}</a></td>
+            <td><a href="/jnode/edit/${node}">${node!''}</a></td>
             <td>
             
             <ul class="list-unstyled list-inline">
-            <li><a onclick="deljnode('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>  </li>
+            <li>
+            <a onclick="deljnode('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a> 
+            <span><a href="/jnode/downsingle?node=${node}"><i class="glyphicon glyphicon-download" ></i></a> </span> 
+            
+              </li>
              </ul>   
              
             </td>
