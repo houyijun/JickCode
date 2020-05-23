@@ -15,12 +15,12 @@
       
       <#list nodes as node>
       <tr>
-			<td>${node_index+1}</td>
+			<td><a onclick="del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>${node_index+1}</td>
             <td><a href="/model/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
             <li>
-            <a onclick="del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>  </li>
+              </li>
             <span><a href="/model/download?name=${node}"><i class="glyphicon glyphicon-download" ></i></a></span>   
              </ul>        
             </td>

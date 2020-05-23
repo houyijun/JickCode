@@ -44,7 +44,7 @@ public class JnodeController {
 	
 	@RequestMapping(value = { "new" })
 	public String jnode_new(Map<String, Object> map) {
-		map.put("divname", "/jnode/addjnode.ftl");
+		map.put("divname", "/jnode/edit.ftl");
 		map.put("jnodename","");
 		map.put("dialog","");
 		map.put("ftl","");

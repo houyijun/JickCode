@@ -8,18 +8,17 @@
         <tr>
           <th>#</th>
           <th>Jnode Name</th>
-          <th>Status</th>
+          <th>Export Code</th>
         </tr>
       </thead>
       <tbody>
       
       <#list svglist as node>
       <tr>
-			<td>${node_index+1}</td>
+			<td><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>${node_index+1}</td>
             <td><a href="/project/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
-            <li><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a></li>
             <li>
             <#list codetypes as codetype>
             <span><a class="text-muted" href="/project/export/${node}/${codetype}"><i class="glyphicon glyphicon-new-window" ></i>${codetype}</a></span>

@@ -1,8 +1,10 @@
 <input id="svgname" value="${svgname}" class="hidden"></input>
  	<div class="view">
     	<ul class="btn-group nav pull-right">
-        	<li><span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</span>
-        	<span  class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
+        	<li>
+        	<span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Commit</span>
+        	<span class="btn btn-info"  onclick="saveas('${svgname}',dragData)">Save as</span>
+        	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>
      </div>
