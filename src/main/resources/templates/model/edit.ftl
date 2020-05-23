@@ -19,10 +19,10 @@
 
 <link href="/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 <link href="/fileinput/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
- <script src="/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
-    <script src="/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
-    <script src="/fileinput/js/fileinput.js" type="text/javascript"></script>
-    <script src="/fileinput/js/locales/fr.js" type="text/javascript"></script>
-    <script src="/fileinput/js/locales/es.js" type="text/javascript"></script>
- <script src="/fileinput/themes/fas/theme.js" type="text/javascript"></script>
- <script src="/fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>    
+<script src="/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+<script src="/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/fileinput/js/locales/fr.js" type="text/javascript"></script>
+<script src="/fileinput/js/locales/es.js" type="text/javascript"></script>
+<script src="/fileinput/themes/fas/theme.js" type="text/javascript"></script>
+<script src="/fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>    

@@ -134,14 +134,14 @@ public class ProjectController {
 		}
 	}
 	
-	@RequestMapping("download")
-	public void download(String name,String type,HttpServletResponse response) {
-		String outFile=name+"."+type;
-		String code = getCode(name,type);
-		if (code==null) {
-			code="null";
+	@RequestMapping(value = "download/{name}")
+	public void download(@PathVariable String name,HttpServletResponse response) {
+		String outFile=name+".proj";
+		String svg=kvDB.get(KVDB.SVG,name);
+		if (svg==null) {
+			svg="null";
 		}
-		Funcs.exportCodeFile(response,outFile,code );
+		Funcs.exportCodeFile(response,outFile,svg );
 	}
 	@RequestMapping(value = { "export/{svg}/{codetype}" })
 	public String export(@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
