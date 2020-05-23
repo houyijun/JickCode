@@ -88,7 +88,7 @@ public class JickCodeService {
 	 *            整个svg图的信息，防止有用到上下文的地方。
 	 * @return
 	 */
-	public String transfer(String jnodeName, SVGNode node, SVG svg) throws Exception {
+	public String transfer(String jnodeName, SVGNode node, SVG svg,Map<String,SVGNode> svgMap) throws Exception {
 		if (jnodeName==null) {
 			LOG.error("jnode名称为空");
 			return null;
@@ -114,13 +114,38 @@ public class JickCodeService {
 		nodeMap.put("node", node);
 		nodeMap.put("props",props);
 		nodeMap.put("params", svg.getParams());
+		nodeMap.put("parents",getParents(node,svgMap));
 		// 现在可以输出代码了
 		String str = str2Str(ftlText, nodeMap);
 
 		return str;
 	}
+	
+	/**
+	 * 父节点列表，处理排序后
+	 * @param node
+	 * @param svgMap
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SVGNode> getParents(SVGNode node, Map<String,SVGNode> svgMap) throws Exception {
+		List<SVGNode> parents=new ArrayList<SVGNode>();
+		if (node.getLinked().size()<1) {
+			return parents;
+		}
+		for(int i=0;i<node.getLinked().size();i++) {
+			JSONObject linked=(JSONObject)node.getLinked().get(i);
+			String name=linked.getString("name");
+			String parent=name.split("\\|")[0];
+			if (svgMap.containsKey(parent)) {
+				parents.add(svgMap.get(parent));
+			}					
+		}
+		return parents;
+	}
 
 	public String toCode(SVG svg) throws Exception {
+		Map<String,SVGNode> svgMap=getMap(svg);
 		String code = "";
 		if (svg.getNodes() != null) {
 			Queue<SVGNode> queue = SVGOpe.genQueue(svg);
@@ -129,7 +154,7 @@ public class JickCodeService {
 				SVGNode node=iter.next();
 				String subCode = "";
 				try {
-					subCode = transfer(node.getName(), node, svg);
+					subCode = transfer(node.getName(), node, svg,svgMap);
 				} catch (Exception e) {
 					e.printStackTrace();
 					subCode = "##Code exception##:" + node.getName() +","+ e.getLocalizedMessage();
@@ -166,5 +191,13 @@ public class JickCodeService {
 	// 将来要重写的，获取jnode的名称
 	private String getNodeName(SVGNode node) {
 		return node.getName();
+	}
+	
+	private Map<String,SVGNode> getMap(SVG svg){
+		Map<String,SVGNode> map=new HashMap<String,SVGNode>();
+		for (SVGNode node:svg.getNodes()) {
+			map.put(node.getNodeId(),node);
+		}
+		return map;
 	}
 }
