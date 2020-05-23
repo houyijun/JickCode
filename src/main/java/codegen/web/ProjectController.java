@@ -37,7 +37,6 @@ public class ProjectController {
 	@Autowired
 	JickCodeService jickCodeService;
 
-
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
 		map.put("divname", "/project/all.ftl");
@@ -149,9 +148,7 @@ public class ProjectController {
 		map.put("divname", "/project/export.ftl");
 		map.put("codetype", codetype);
 		map.put("svg", svg);
-
 		String code = getCode(svg,codetype);
-
 		map.put("code", code);
 		return "/frame";
 	}
@@ -174,14 +171,12 @@ public class ProjectController {
 			
 			String whole_ftl=kvDB.get(KVDB.MODEL,type);
 			code = FreeMakerUtil.outStringFtl(codemap, whole_ftl);
-
 		} catch (Exception e) {
 			LOG.error("输出代码异常:{}", e);
 			e.printStackTrace();
 			code = "output code exception!";
 		}
 		return code;
-
 	}
 
 	

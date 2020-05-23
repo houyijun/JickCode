@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import codegen.spark.jnode.JNode;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -58,8 +57,6 @@ public class FreeMakerUtil {
 	 * @throws Exception
 	 */
 	public static void Ftl2File(Map<String, Object> beanMap,String rootPath,String file_ftl,String file_out) throws Exception{
-//		Configuration config = new Configuration(Configuration.getVersion());
-//		config.setObjectWrapper(new DefaultObjectWrapper(Configuration.getVersion()));
 		Configuration config = new Configuration();
 		config.setDirectoryForTemplateLoading(new File(rootPath));
 		config.setObjectWrapper(new DefaultObjectWrapper());
@@ -70,15 +67,4 @@ public class FreeMakerUtil {
 		out.close();
 	}
 	
-	public static void Ftl2File(JNode jickNode,String file_ftl,String file_out) throws Exception{
-//		Configuration config = new Configuration(Configuration.getVersion());
-//		config.setObjectWrapper(new DefaultObjectWrapper(Configuration.getVersion()));
-		Configuration config = new Configuration();
-		config.setObjectWrapper(new DefaultObjectWrapper());
-		Template template = config.getTemplate(file_ftl, "UTF-8");
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file_out), "UTF-8"));
-		template.process(jickNode, out);
-		out.flush();
-		out.close();
-	}
 }

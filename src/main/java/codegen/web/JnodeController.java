@@ -37,7 +37,7 @@ public class JnodeController {
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
 		map.put("divname", "/jnode/all.ftl");
-		List<String> jnodeNames=kvDB.getKeys(KVDB.JNODE);//storageService.getJNodeKeys();
+		List<String> jnodeNames=kvDB.getKeys(KVDB.JNODE);
 		map.put("jnodelist",jnodeNames);
 		return "/frame";
 	}
@@ -56,7 +56,7 @@ public class JnodeController {
 	public String jnode_uploadForm_path(@PathVariable String jnodename,Map<String, Object> map) {
 		map.put("divname", "/jnode/addjnode.ftl");
 		map.put("jnodename",jnodename);
-		String json =kvDB.get(KVDB.JNODE, jnodename);//storageService.getJNode(jnodename);
+		String json =kvDB.get(KVDB.JNODE, jnodename);
 		
 		LOG.info("jnode内容:{}",json);
 		if (StringUtils.isNotEmpty(json)) {
@@ -64,7 +64,6 @@ public class JnodeController {
 			map.put("ftl",jnode.get("ftl"));
 			map.put("dialog",jnode.get("dialog"));
 		}
-		
 		return "/frame";
 	}
 	

@@ -65,8 +65,6 @@ public class JickCodeService {
 	 * json to map<string,object>
 	 */
 	private Map<String, Object> json2Map(String jsondata) {
-		// json字符串
-		// jsondata="{\"contend\":[{\"bid\":\"22\",\"carid\":\"0\"},{\"bid\":\"22\",\"carid\":\"0\"}],\"result\":100,\"total\":2}";
 		JSONObject obj = JSON.parseObject(jsondata);
 		Map<String, Object> data = new HashMap<String, Object>();
 		Iterator it = obj.entrySet().iterator();

@@ -38,7 +38,6 @@ public class ModelController {
 
 	// 导入
 	@RequestMapping("import.do")
-//	@ResponseBody
 	public String importModel_do(@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
 		try {
 			String modelname = request.getParameter("name");
@@ -50,7 +49,6 @@ public class ModelController {
 			e.printStackTrace();
 		}
 		return "redirect:/model/all";
-//		return Funcs.getJsonResp("0", "SUCCESS", "").toJSONString();
 	}
 
 	/**
@@ -118,5 +116,4 @@ public class ModelController {
 		return json.toJSONString();
 	}
 	
-
 }

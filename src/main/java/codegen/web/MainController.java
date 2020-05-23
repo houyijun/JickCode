@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 	private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
 
-
 	@RequestMapping(value = { "/" })
 	public String home(Map<String, Object> map) {
-		LOG.info("JickCode home page");
 		return "redirect:/project/all";
 	}
 	
