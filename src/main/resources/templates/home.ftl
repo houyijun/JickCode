@@ -19,6 +19,7 @@
 <script src="/spark/uuid.js"></script>
 
 <link type="text/css" rel="stylesheet" href="/spark/main.css" />
+<script src="/js/jick.js"></script>
 
 </head>
 <body class="edit" style="min-height: 488px; cursor: auto;">

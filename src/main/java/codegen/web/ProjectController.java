@@ -27,9 +27,9 @@ import codegen.spark.service.JickCodeService;
 import codegen.spark.utils.FreeMakerUtil;
 
 @Controller
-@RequestMapping("/svg")
-public class SvgController {
-	private static final Logger LOG = LoggerFactory.getLogger(SvgController.class);
+@RequestMapping("/project")
+public class ProjectController {
+	private static final Logger LOG = LoggerFactory.getLogger(ProjectController.class);
 	
 	@Autowired
 	KVDB kvDB;
@@ -40,7 +40,7 @@ public class SvgController {
 
 	@RequestMapping(value = { "all" })
 	public String all(Map<String, Object> map) {
-		map.put("divname", "/svg/all.ftl");
+		map.put("divname", "/project/all.ftl");
 		map.put("menu","projects");
 		List<String> jnodeNames =kvDB.getKeys(KVDB.SVG);
 		map.put("svglist", jnodeNames);
@@ -76,7 +76,7 @@ public class SvgController {
 	@RequestMapping(value = { "edit/{svgname}" })
 	public String edit(@PathVariable String svgname, Map<String, Object> map) {
 		map.put("svgname", svgname);
-		map.put("divname", "/svg/edit.ftl");
+		map.put("divname", "/project/edit.ftl");
 		String json = getSvgJson(svgname);
 		map.put("initdata", json);
 		Map<String, String> nodes =kvDB.getAll(KVDB.JNODE);
@@ -146,7 +146,7 @@ public class SvgController {
 	}
 	@RequestMapping(value = { "export/{svg}/{codetype}" })
 	public String export(@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
-		map.put("divname", "/svg/export.ftl");
+		map.put("divname", "/project/export.ftl");
 		map.put("codetype", codetype);
 		map.put("svg", svg);
 

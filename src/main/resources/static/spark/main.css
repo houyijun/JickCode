@@ -1,4 +1,5 @@
-.menu-spark span{
+
+.menu-spark .menu{
 	padding-left:15px;
 	color: #a7a2a2;
 }
@@ -63,4 +64,8 @@
 
 .output .circle:hover {
 	background: #FC9901;
+}
+
+.menu-spark .menu.active{
+	color: #d4d4e7;
 }

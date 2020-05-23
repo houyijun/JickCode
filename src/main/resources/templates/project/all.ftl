@@ -16,13 +16,13 @@
       <#list svglist as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td><a href="/svg/edit/${node}">${node!''}</a></td>
+            <td><a href="/project/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
             <li><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a></li>
             <li>
             <#list codetypes as codetype>
-            <span><a class="text-muted" href="/svg/export/${node}/${codetype}"><i class="glyphicon glyphicon-new-window" ></i>${codetype}</a></span>
+            <span><a class="text-muted" href="/project/export/${node}/${codetype}"><i class="glyphicon glyphicon-new-window" ></i>${codetype}</a></span>
             </#list>
             </li>
             
@@ -40,7 +40,7 @@
 function del(node){
     if(confirm("确定要删除吗？")) {
         $.ajax({
-        			url:"/svg/delete",
+        			url:"/project/delete",
         			type:"post",
         			dataType:"json",
         			data:{node:node},
@@ -63,7 +63,7 @@ function submit(){
 	var name=$("#myModal input[name=name]").val();
 	console.log(name);
 	 $.ajax({
-        			url:"/svg/add.do",
+        			url:"/project/add.do",
         			type:"post",
         			dataType:"json",
         			data:{name:name},

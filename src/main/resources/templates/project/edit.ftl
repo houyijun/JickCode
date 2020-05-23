@@ -2,8 +2,7 @@
  	<div class="view">
     	<ul class="btn-group nav pull-right">
         	<li><span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Save</span>
-        	<span  class="btn btn-info"  onclick="getsvg('${svgname}')">Load</span>
-        	<span  class="btn btn-info"  onclick="test('${svgname}')">test</span>
+        	<span  class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>
      </div>
@@ -395,12 +394,13 @@
 				target.chart=dragData;
 				console.log("#target:",target);
             	$.ajax({
-        			url:"/svg/postSvg",
+        			url:"/project/postSvg",
         			type:"post",
         			dataType:"json",
         			data:{svgName:svgname,svg:JSON.stringify(target)},
         			success:function(res){
-                    	console.log(res);                  
+                    	console.log(res);    
+                    	alert(res.msg);              
             		}
     			});
             }
@@ -423,23 +423,10 @@
   				});
 			}
 			
-			function test(res){
-				console.log("#initdata:",res);
-				var svg=eval('(' + res.data + ')');  
-				dragData=svg.chart;
-                    	mapData=svg.chart;
-                    	reload(1);
-                    	$("#spark-canvas").empty();
-                    	 //load node property dialog 
-                    	for(var i = 0; i < dragData.length; i++) {
-                    		newnode(dragData[i].label,dragData[i].id);
-                    		loadNodeProperties(dragData[i].id,dragData);
-                   	 	}
-			}
             
             function getsvg(svgname){
             	$.ajax({
-        			url:"/svg/getSvg",
+        			url:"/project/getSvg",
         			type:"get",
         			dataType:"json",
         			data:{svgName:svgname},

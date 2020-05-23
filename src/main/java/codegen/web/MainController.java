@@ -30,7 +30,7 @@ public class MainController {
 	@RequestMapping(value = { "/" })
 	public String home(Map<String, Object> map) {
 		LOG.info("JickCode home page");
-		return "redirect:/svg/all";
+		return "redirect:/project/all";
 	}
 	
 
