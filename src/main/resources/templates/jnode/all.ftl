@@ -1,6 +1,17 @@
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" href="/jnode/new" rel="table-hover"><i class="glyphicon glyphicon-plus">Create</i></a>
+		
 	</span>
+	<ul class="btn-group nav pull-right">
+       	<li>
+		<span class="configuration">
+		<a class="btn btn-sm btn-info" href="/jnode/download" rel="table-hover"><i class="glyphicon glyphicon-download">Export</i></a>
+		
+		<a class="btn btn-sm btn-info" href="/jnode/import" rel="table-hover"><i class="glyphicon glyphicon-upload">Import</i></a>
+		</span>
+       	</li>
+    </ul>
+	
 	<div class="preview">Jnode List</div>
 <div class="view">
   <table class="table" contenteditable="false">

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -32,7 +35,7 @@ public class JnodeController {
 	JickCodeService jickCodeService;
 
 	@RequestMapping(value = { "all" })
-	public String jnodes(Map<String, Object> map) {
+	public String all(Map<String, Object> map) {
 		map.put("divname", "/jnode/all.ftl");
 		List<String> jnodeNames=kvDB.getKeys(KVDB.JNODE);//storageService.getJNodeKeys();
 		map.put("jnodelist",jnodeNames);
@@ -82,8 +85,6 @@ public class JnodeController {
 		String jnodeData=json.toJSONString();
 		LOG.info("###uploadJnode name={},jnodeData={}", name,jnodeData);
 		kvDB.saveOrUpdate(KVDB.JNODE, name,jnodeData);
-		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
-//		return ret.toJSONString();
 		return "forward:/jnode/all";
 	}
 	
@@ -96,5 +97,49 @@ public class JnodeController {
 		return json.toJSONString();
 	}
 	
+	/**
+	 * 导出所有jnode到单个文件
+	 */
+	@RequestMapping("download")
+	public void download(HttpServletResponse response) {
+		String outFile="nodes.json";
+		Map<String,String> nodes =kvDB.getAll(KVDB.JNODE);
+		if (nodes==null) {
+			Funcs.exportCodeFile(response,outFile,"" );
+			return;
+		}
+		String code = JSONObject.toJSONString(nodes);		
+		Funcs.exportCodeFile(response,outFile,code );
+	}
+	
+	
+	@RequestMapping(value = { "import" })
+	public String importpage(Map<String, Object> map) {
+		map.put("divname", "/jnode/import.ftl");
+		return "/frame";
+	}
+	/**
+	 * 批量导入所有jnodes
+	 * @param file
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("import.do")
+	public String import_do(@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
+		try {
+			String content = new String(file.getBytes());
+			LOG.info("上传名称={},文件内容={}",file.getName(),content);
+			Map<String,String> map =JSONObject.parseObject(content).toJavaObject(Map.class);
+			if (map!=null) {
+				for (String key:map.keySet()) {
+					kvDB.saveOrUpdate(KVDB.JNODE,key,map.get(key));
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/jnode/all";
+	}
 	
 }

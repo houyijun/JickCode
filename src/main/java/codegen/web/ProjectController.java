@@ -187,15 +187,7 @@ public class ProjectController {
 	
 	private String getSvgJson(String svgName) {
 		String value = kvDB.get(KVDB.SVG,svgName);
-		JSONObject json = new JSONObject();
-		json.put("code", "0");
-		json.put("msg", "SUCCESS");
-		if (value != null) {
-			json.put("data", value);
-		} else {
-			json.put("data", "no svg");
-		}
-		return json.toJSONString();
+		return Funcs.getJsonResp("0", "SUCCESS", value).toJSONString();
 	}
 	
 }
