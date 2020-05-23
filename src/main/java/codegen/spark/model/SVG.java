@@ -1,12 +1,14 @@
 package codegen.spark.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 public class SVG {
 	private Map<String,String> params;
-	private List<SVGNode>  nodes;
+	private List<SVGNode>  nodes=new ArrayList<SVGNode>();
+	
 	public Map<String, String> getParams() {
 		return params;
 	}
@@ -19,5 +21,6 @@ public class SVG {
 	public void setNodes(List<SVGNode> nodes) {
 		this.nodes = nodes;
 	}
+	
 	
 }

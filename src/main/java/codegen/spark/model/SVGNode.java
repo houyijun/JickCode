@@ -14,6 +14,11 @@ public class SVGNode {
 	private JSONArray linked;
 	private JSONArray link;
 	
+	//id+name可表示唯一的nodeId
+	public String getNodeId() {
+		return id+name;
+	}
+	
 	//父节点，是要要特殊处理的，特别是在存在多个父节点的情况下
 	private List<String> fathers;
 	

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import codegen.spark.db.KVDB;
 import codegen.spark.model.SVG;
 import codegen.spark.model.SVGNode;
+import codegen.spark.model.SVGOpe;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -121,8 +123,10 @@ public class JickCodeService {
 	public String toCode(SVG svg) throws Exception {
 		String code = "";
 		if (svg.getNodes() != null) {
-			for (int i = 0; i < svg.getNodes().size(); i++) {
-				SVGNode node = svg.getNodes().get(i);
+			Queue<SVGNode> queue = SVGOpe.genQueue(svg);
+			Iterator<SVGNode> iter=queue.iterator();
+			while (iter.hasNext()) {
+				SVGNode node=iter.next();
 				String subCode = "";
 				try {
 					subCode = transfer(node.getName(), node, svg);
@@ -132,6 +136,18 @@ public class JickCodeService {
 				}
 				code = code + subCode + "\n";
 			}
+			
+//			for (int i = 0; i < svg.getNodes().size(); i++) {
+//				SVGNode node = svg.getNodes().get(i);
+//				String subCode = "";
+//				try {
+//					subCode = transfer(node.getName(), node, svg);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					subCode = "##Code exception##:" + node.getName() +","+ e.getLocalizedMessage();
+//				}
+//				code = code + subCode + "\n";
+//			}
 		}
 		return code;
 	}
