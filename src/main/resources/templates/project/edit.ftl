@@ -3,8 +3,8 @@
  	<div class="view">
     	<ul class="btn-group nav pull-right">
         	<li>
-        	<span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Commit</span>
-        	<span class="btn btn-info"  onclick="javascript:window.location.href='/${template}/project/download/${svgname}'">Save as</span>
+        	<span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">保存</span>
+        	<span class="btn btn-info"  onclick="javascript:window.location.href='/${template}/project/download/${svgname}'">下载</span>
         	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>

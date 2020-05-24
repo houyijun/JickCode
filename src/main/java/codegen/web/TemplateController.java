@@ -20,6 +20,15 @@ import codegen.spark.db.KVDB;
 public class TemplateController {
 	@Autowired
 	KVDB kvDB;
+	
+	@RequestMapping(value = "/delete", method = { RequestMethod.POST })
+	@ResponseBody
+	public String delete(HttpServletRequest request) {
+		String template = request.getParameter("template");
+		boolean success=kvDB.del(template);
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
+		return json.toJSONString();
+	}
 
 	@RequestMapping(value = "template/add", method = { RequestMethod.POST })
 	@ResponseBody

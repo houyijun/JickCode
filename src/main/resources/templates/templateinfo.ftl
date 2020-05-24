@@ -1,6 +1,6 @@
 	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
-		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建</i></a>
+		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建项目</i></a>
 		<a class="btn btn-sm btn-info" href="/${template}/jnode/all"><i class="glyphicon glyphicon-asterisk">节点模板</i></a>
 		<a class="btn btn-sm btn-info" href="/${template}/model/all"><i class="glyphicon glyphicon-asterisk">代码模板</i></a>
 	</span>

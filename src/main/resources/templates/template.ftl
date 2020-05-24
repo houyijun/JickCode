@@ -1,18 +1,19 @@
 	<span class="configuration">
-		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
+		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建模板</i></a>
 	</span>
-	<div class="preview">模板列表</div>
+	<div class="preview"><h2>模板列表</h2></div>
 
 <div class="box box-element ui-draggable" style="display: block;"> 
 	<div class="view">
          <ul class="thumbnails">
             <#list templates as template>
-             <li class="span4" onclick="window.location.href='/${template}/info'">
+             <li class="span4">
                <div class="thumbnail">
                  <div class="caption">
-                     <h4>${template}</h4>
+                     <span><a href="/${template}/info">${template}</a></span>
+                     <span class="pull-right"> <i onclick="del('${template}');" class="glyphicon glyphicon-trash text-danger" ></i></span>
                   </div>
-                </div>
+                 
                </div>
             </li>
             </#list>
@@ -21,6 +22,23 @@
 </div>
 
 <script>
+
+function del(template){
+    if(confirm("确定要删除吗？")) {
+        $.ajax({
+        			url:"/delete",
+        			type:"post",
+        			dataType:"json",
+        			data:{template:template},
+        			success:function(res){
+                    	console.log(res);
+                    	window.location.reload();                  
+            		}
+    			});
+    } 
+}
+
+
 function show(){
 	$("#myModal").modal({
        		show: true,
@@ -32,20 +50,19 @@ function submit(){
 	var name=$("#myModal input[name=modelname]").val();
 	console.log(name);
 	 $.ajax({
-        			url:"/template/add",
-        			type:"post",
-        			dataType:"json",
-        			data:{name:name},
-        			success:function(res){
-                    	console.log(res);
-                    	if (res.code=="0"){
-                    		window.location.reload();
-                    	}else{
-                    		alert(res.msg);
-    
-                    	}                  
-            		}
-    			});
+       		url:"/template/add",
+       		type:"post",
+       		dataType:"json",
+       		data:{name:name},
+       		success:function(res){
+               	console.log(res);
+               	if (res.code=="0"){
+               		window.location.reload();
+               	}else{
+               		alert(res.msg);
+               	}                  
+       		}
+    });
 }
 
 </script>
