@@ -109,9 +109,7 @@ public class ProjectController {
 	public String postSvg(HttpServletRequest request) {
 		String svgName = request.getParameter("svgName");
 		String svg = request.getParameter("svg");
-		LOG.info("###postSvg name={},svg={}", svgName, svg);
 		kvDB.saveOrUpdate(KVDB.SVG,	svgName, svg);
-
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", null);
 		return json.toJSONString();
 	}
@@ -126,7 +124,6 @@ public class ProjectController {
 	@ResponseBody
 	public String getSvg(String svgName) {
 		String json = getSvgJson(svgName);
-		LOG.info("###query svgname={},svg={}", svgName, json);
 		if (json!=null) {
 			return json;
 		}else {
