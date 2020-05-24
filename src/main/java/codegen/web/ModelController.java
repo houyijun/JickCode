@@ -28,7 +28,6 @@ import codegen.spark.db.KVDB;
  *
  */
 @Controller
-@RequestMapping("/model")
 public class ModelController {
 	private static final Logger LOG = LoggerFactory.getLogger(ModelController.class);
 
@@ -37,7 +36,7 @@ public class ModelController {
 	
 
 	// 导入
-	@RequestMapping("{template}/import.do")
+	@RequestMapping("{template}/model/import.do")
 	public String importModel_do(@PathVariable String template,@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
 		try {
 			String modelname = request.getParameter("name");
@@ -48,7 +47,7 @@ public class ModelController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/model/all";
+		return "redirect:/"+template+"/model/all";
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class ModelController {
 	 * @param name
 	 * @param response
 	 */
-	@RequestMapping("{template}/download")
+	@RequestMapping("{template}/model/download")
 	public void download(@PathVariable String template,String name,HttpServletResponse response) {
 		String outFile=name+".txt";
 		String modelcontent=kvDB.getTemplate(template,KVDB.MODEL,name);
@@ -73,16 +72,18 @@ public class ModelController {
 	 * @param map
 	 * @return
 	 */
-	@RequestMapping(value = { "{template}/edit/{modelname}" })
+	@RequestMapping(value = { "{template}/model/edit/{modelname}" })
 	public String edit(@PathVariable String template,@PathVariable String modelname,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/model/edit.ftl");
 		map.put("modelname", modelname);
 		map.put("modelcontent",kvDB.getTemplate(template,KVDB.MODEL,modelname));
 		return "/frame";
 	}
 	
-	@RequestMapping(value = { "{template}/detail/{modelname}" })
+	@RequestMapping(value = { "{template}/model/detail/{modelname}" })
 	public String detail(@PathVariable String template,@PathVariable String modelname,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/model/detail.ftl");
 		map.put("modelname", modelname);
 		map.put("modelcontent",kvDB.getTemplate(template,KVDB.MODEL,modelname));
@@ -90,7 +91,7 @@ public class ModelController {
 	}
 	
 	
-	@RequestMapping(value = "{template}/delete", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/model/delete", method = { RequestMethod.POST })
 	@ResponseBody
 	public String delete(@PathVariable String template,HttpServletRequest request) {
 		String node = request.getParameter("name");
@@ -99,15 +100,16 @@ public class ModelController {
 		return json.toJSONString();
 	}
 	
-	@RequestMapping(value = { "{template}/all" })
+	@RequestMapping(value = { "{template}/model/all" })
 	public String all(@PathVariable String template,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/model/all.ftl");
 		List<String> nodes= kvDB.getTemplateKeys(template,KVDB.MODEL);
 		map.put("nodes",nodes);
 		return "/frame";
 	}
 	
-	@RequestMapping(value = "{template}/add", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/model/add", method = { RequestMethod.POST })
 	@ResponseBody
 	public String add(@PathVariable String template,HttpServletRequest request) {
 		String node = request.getParameter("name");

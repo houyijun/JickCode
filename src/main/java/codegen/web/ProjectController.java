@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +142,7 @@ public class ProjectController {
 		}
 		Funcs.exportCodeFile(response,outFile,svg );
 	}
-	@RequestMapping(value = { "{export/{svg}/{codetype}" })
+	@RequestMapping(value = { "{template}/project/export/{svg}/{codetype}" })
 	public String export(@PathVariable String template,@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
 		map.put("template",template);
 		map.put("divname", "/project/export.ftl");
@@ -155,6 +156,9 @@ public class ProjectController {
 	private String getCode(String template,String name,String type) {
 		String svgJson =kvDB.getTemplate(template,KVDB.SVG,name);
 		JSONObject json = JSONObject.parseObject(svgJson);
+		if (!json.containsKey("chart")|| StringUtils.isEmpty( json.getString("chart"))) {
+			return "代码生成异常:"+svgJson;
+		}
 		JSONArray chart = (JSONArray) json.get("chart");
 
 		List<SVGNode> nodes = chart.toJavaList(SVGNode.class);

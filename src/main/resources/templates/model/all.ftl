@@ -1,3 +1,4 @@
+	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
@@ -16,11 +17,11 @@
       <#list nodes as node>
       <tr>
 			<td><a onclick="del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
-            <td><a href="/model/edit/${node}">${node!''}</a></td>
+            <td><a href="/${template}/model/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
             	<li>
-               		<span><a href="/model/download?name=${node}"><i class="glyphicon glyphicon-download" ></i></a></span>   
+               		<span><a href="/${template}/model/download?name=${node}"><i class="glyphicon glyphicon-download" ></i></a></span>   
               	</li>
              </ul>        
             </td>
@@ -34,9 +35,10 @@
 
 <script>
 function del(node){
+	var template=$("#template").val();
     if(confirm("确定要删除吗？")) {
         $.ajax({
-        			url:"/model/delete",
+        			url:"/"+template+"/model/delete",
         			type:"post",
         			dataType:"json",
         			data:{name:node},
@@ -58,8 +60,9 @@ function show(){
 function submit(){
 	var name=$("#myModal input[name=modelname]").val();
 	console.log(name);
+	var template=$("#template").val();
 	 $.ajax({
-        			url:"/model/add",
+        			url:"/"+template+"/model/add",
         			type:"post",
         			dataType:"json",
         			data:{name:name},

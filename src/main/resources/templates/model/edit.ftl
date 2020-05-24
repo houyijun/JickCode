@@ -1,5 +1,5 @@
 
-<form  enctype="multipart/form-data" action="/model/import.do" accept-charset="UTF-8" method="post">
+<form  enctype="multipart/form-data" action="/${template}/model/import.do" accept-charset="UTF-8" method="post">
    	<fieldset>
 		<legend contenteditable="true">${modelname!''}
 		 </legend>

@@ -1,5 +1,5 @@
 <div class="view">
-<span><a href="/project/download?type=${codetype}&name=${svg}">Download generated code</a></span>  
+<span><a href="/${template}/project/download?type=${codetype}&name=${svg}">Download generated code</a></span>  
 </div>
 
 <span class="help-block" contenteditable="true">Code of ${svg}[${codetype}]</span>
