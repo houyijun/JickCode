@@ -40,10 +40,21 @@ public class KVSqlliteUtil {
 		return con;
 	}
 
-	public static boolean createTable(Connection con,  String tableName) {
+	public static boolean createTemplateTable(Connection con,  String tableName) {
 		try {
 			Statement stat = con.createStatement();
 			stat.executeUpdate("create table " + tableName + " (key TEXT, value TEXT); ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean createTable(Connection con,  String tableName) {
+		try {
+			Statement stat = con.createStatement();
+			stat.executeUpdate("create table " + tableName + " (template TEXT,key TEXT, value TEXT); ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -186,5 +197,116 @@ public class KVSqlliteUtil {
 		}
 		return retValue;
 	}
+	
+	
+	/**
+	 * 模板
+	 */
 
+	public static void deleteTemplateKey(Connection con,String template, String tableName, String key) {
+		try {
+			Statement stat = con.createStatement();
+			if (tableName != null && !"".equals(tableName)) {
+				stat.executeUpdate("delete from " + tableName + " where key='" + key + "' and template='"+template+"';");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * add KV to tableName
+	 * 
+	 * @param con
+	 * @param tableName
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static boolean addTemplateKV(Connection con, String template,String tableName, String key, String value) {
+		value=value.replaceAll("'","\'");
+		PreparedStatement prep = null;
+		try {
+			prep = con.prepareStatement("insert into " + tableName + " values (?,?, ?);");
+			prep.setString(1,template);
+			prep.setString(2, key);
+			prep.setString(3, value);
+			prep.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	public static boolean updateTemplateKVValue(Connection con,String template, String tableName, String key, String value) {
+		value=value.replaceAll("'","\'");
+		String sql = "update " + tableName + " set value='" + value + 
+				"' where key='" + key + "' and template='"+template+"';";
+		Statement prep = null;
+		try {
+			prep = con.createStatement();
+			prep.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	public static Map<String, String> getTemplateAllKVs(Connection connection,String template, String tableName)  {
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30); 
+			ResultSet rs = statement.executeQuery("select key,value from " + tableName + " where  template='"+template+"';");
+			while (rs.next()) {
+				String key = rs.getString("key");
+				String value = rs.getString("value");
+				map.put(key, value);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	public static List<String> getTemplateKeys(Connection connection, String template,String tableName)  {
+		List<String> keys = new ArrayList<String>();
+		try {
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30); 
+			ResultSet rs = statement.executeQuery("select key from " + tableName + " where  template='"+template+"';");
+			while (rs.next()) {
+				String key = rs.getString("key");
+				if (key!=null) {
+					keys.add(key);
+				}
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return keys;
+	}
+
+	public static String getTemplateKeyValue(Connection connection,String template, String tableName, String key) {
+		String retValue = null;
+		try {
+			String sql = "select key,value from " + tableName + " where key='" + key +"' and template='"+template+"';";
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				retValue = rs.getString("value");
+				break;
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return retValue;
+	}
 }

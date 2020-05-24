@@ -88,12 +88,12 @@ public class JickCodeService {
 	 *            整个svg图的信息，防止有用到上下文的地方。
 	 * @return
 	 */
-	public String transfer(String jnodeName, SVGNode node, SVG svg,Map<String,SVGNode> svgMap) throws Exception {
+	public String transfer(String template,String jnodeName, SVGNode node, SVG svg,Map<String,SVGNode> svgMap) throws Exception {
 		if (jnodeName==null) {
 			LOG.error("jnode名称为空");
 			return null;
 		}
-		String jnodeModel =kvDB.get(KVDB.JNODE,jnodeName);
+		String jnodeModel =kvDB.getTemplate(template,KVDB.JNODE,jnodeName);
 
 		 JSONObject jnodeObj = JSONObject.parseObject(jnodeModel);
 		String ftlText = (String)jnodeObj.get("ftl");
@@ -144,7 +144,7 @@ public class JickCodeService {
 		return parents;
 	}
 
-	public String toCode(SVG svg) throws Exception {
+	public String toCode(String template,SVG svg) throws Exception {
 		Map<String,SVGNode> svgMap=getMap(svg);
 		String code = "";
 		if (svg.getNodes() != null) {
@@ -154,7 +154,7 @@ public class JickCodeService {
 				SVGNode node=iter.next();
 				String subCode = "";
 				try {
-					subCode = transfer(node.getName(), node, svg,svgMap);
+					subCode = transfer(template,node.getName(), node, svg,svgMap);
 				} catch (Exception e) {
 					e.printStackTrace();
 					subCode = "##Code exception##:" + node.getName() +","+ e.getLocalizedMessage();

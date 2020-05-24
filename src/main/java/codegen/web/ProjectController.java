@@ -27,7 +27,6 @@ import codegen.spark.service.JickCodeService;
 import codegen.spark.utils.FreeMakerUtil;
 
 @Controller
-@RequestMapping("/project")
 public class ProjectController {
 	private static final Logger LOG = LoggerFactory.getLogger(ProjectController.class);
 	
@@ -37,48 +36,50 @@ public class ProjectController {
 	@Autowired
 	JickCodeService jickCodeService;
 
-	@RequestMapping(value = { "all" })
-	public String all(Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/project/all" })
+	public String all(@PathVariable String template,Map<String, Object> map) {
+		map.put("template",template);
 		map.put("divname", "/project/all.ftl");
 		map.put("menu","projects");
-		List<String> jnodeNames =kvDB.getKeys(KVDB.SVG);
+		List<String> jnodeNames =kvDB.getTemplateKeys(template,KVDB.SVG);
 		map.put("svglist", jnodeNames);
-		List<String> codetypes=kvDB.getKeys(KVDB.MODEL);
+		List<String> codetypes=kvDB.getTemplateKeys(template,KVDB.MODEL);
 		map.put("codetypes", codetypes);
 		return "/frame";
 	}
 
-	@RequestMapping(value = "delete", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/project/delete", method = { RequestMethod.POST })
 	@ResponseBody
-	public String delete(HttpServletRequest request) {
+	public String delete(@PathVariable String template,HttpServletRequest request) {
 		String node = request.getParameter("node");
-		boolean success =kvDB.del(KVDB.SVG,node);
+		boolean success =kvDB.delTemplate(template,KVDB.SVG,node);
 
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}
 
-	@RequestMapping(value = "add.do", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/project/add.do", method = { RequestMethod.POST })
 	@ResponseBody
-	public String add(HttpServletRequest request) {
+	public String add(@PathVariable String template,HttpServletRequest request) {
 		String name = request.getParameter("name");
-		String svg = getSvgJson(name);
+		String svg = getSvgJson(template,name);
 		if (svg==null) {
 			return Funcs.getJsonResp("1", "duplicated svg name", null).toJSONString();
 			
 		}
-		kvDB.saveOrUpdate(KVDB.SVG,name, "{\"chart\":\"\"}");
+		kvDB.updateTemplate(template,KVDB.SVG,name, "{\"chart\":\"\"}");
 		JSONObject ret = Funcs.getJsonResp("0", "SUCCESS", null);
 		return ret.toJSONString();
 	}
 
-	@RequestMapping(value = { "edit/{svgname}" })
-	public String edit(@PathVariable String svgname, Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/project/edit/{svgname}" })
+	public String edit(@PathVariable String template,@PathVariable String svgname, Map<String, Object> map) {
+		map.put("template",template);
 		map.put("svgname", svgname);
 		map.put("divname", "/project/edit.ftl");
-		String json = getSvgJson(svgname);
+		String json = getSvgJson(template,svgname);
 		map.put("initdata", json);
-		Map<String, String> nodes =kvDB.getAll(KVDB.JNODE);
+		Map<String, String> nodes =kvDB.getTemplateAll(template,KVDB.JNODE);
 		List<String> names = new ArrayList<String>();
 		Map<String,String> modelMap=new HashMap<String,String>();
 		for (String key : nodes.keySet()) {
@@ -104,12 +105,12 @@ public class ProjectController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "postSvg", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/project/postSvg", method = { RequestMethod.POST })
 	@ResponseBody
-	public String postSvg(HttpServletRequest request) {
+	public String postSvg(@PathVariable String template,HttpServletRequest request) {
 		String svgName = request.getParameter("svgName");
 		String svg = request.getParameter("svg");
-		kvDB.saveOrUpdate(KVDB.SVG,	svgName, svg);
+		kvDB.updateTemplate(template,KVDB.SVG,	svgName, svg);
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", null);
 		return json.toJSONString();
 	}
@@ -120,10 +121,10 @@ public class ProjectController {
 	 * @param svgName
 	 * @return
 	 */
-	@RequestMapping(value = "getSvg", method = { RequestMethod.GET })
+	@RequestMapping(value = "{template}/project/getSvg", method = { RequestMethod.GET })
 	@ResponseBody
-	public String getSvg(String svgName) {
-		String json = getSvgJson(svgName);
+	public String getSvg(@PathVariable String template,String svgName) {
+		String json = getSvgJson(template,svgName);
 		if (json!=null) {
 			return json;
 		}else {
@@ -131,27 +132,28 @@ public class ProjectController {
 		}
 	}
 	
-	@RequestMapping(value = "download/{name}")
-	public void download(@PathVariable String name,HttpServletResponse response) {
+	@RequestMapping(value = "{template}/project/download/{name}")
+	public void download(@PathVariable String template,@PathVariable String name,HttpServletResponse response) {
 		String outFile=name+".proj";
-		String svg=kvDB.get(KVDB.SVG,name);
+		String svg=kvDB.getTemplate(template,KVDB.SVG,name);
 		if (svg==null) {
 			svg="null";
 		}
 		Funcs.exportCodeFile(response,outFile,svg );
 	}
-	@RequestMapping(value = { "export/{svg}/{codetype}" })
-	public String export(@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
+	@RequestMapping(value = { "{export/{svg}/{codetype}" })
+	public String export(@PathVariable String template,@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
+		map.put("template",template);
 		map.put("divname", "/project/export.ftl");
 		map.put("codetype", codetype);
 		map.put("svg", svg);
-		String code = getCode(svg,codetype);
+		String code = getCode(template,svg,codetype);
 		map.put("code", code);
 		return "/frame";
 	}
 	
-	private String getCode(String name,String type) {
-		String svgJson =kvDB.get(KVDB.SVG,name);
+	private String getCode(String template,String name,String type) {
+		String svgJson =kvDB.getTemplate(template,KVDB.SVG,name);
 		JSONObject json = JSONObject.parseObject(svgJson);
 		JSONArray chart = (JSONArray) json.get("chart");
 
@@ -161,12 +163,12 @@ public class ProjectController {
 		svgobj.setNodes(nodes);
 		String code = "";
 		try {
-			code = jickCodeService.toCode(svgobj);
+			code = jickCodeService.toCode(template,svgobj);
 
 			Map<String, Object> codemap = new HashMap<String, Object>();
 			codemap.put("code_generated", code);
 			
-			String whole_ftl=kvDB.get(KVDB.MODEL,type);
+			String whole_ftl=kvDB.getTemplate(template,KVDB.MODEL,type);
 			code = FreeMakerUtil.outStringFtl(codemap, whole_ftl);
 		} catch (Exception e) {
 			LOG.error("输出代码异常:{}", e);
@@ -177,8 +179,8 @@ public class ProjectController {
 	}
 
 	
-	private String getSvgJson(String svgName) {
-		String value = kvDB.get(KVDB.SVG,svgName);
+	private String getSvgJson(String template,String svgName) {
+		String value = kvDB.getTemplate(template,KVDB.SVG,svgName);
 		return Funcs.getJsonResp("0", "SUCCESS", value).toJSONString();
 	}
 	

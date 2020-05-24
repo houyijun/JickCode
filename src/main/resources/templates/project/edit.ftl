@@ -1,9 +1,10 @@
+<input class="hidden type="text" id="template" value="${template}"></input>
 <input id="svgname" value="${svgname}" class="hidden"></input>
  	<div class="view">
     	<ul class="btn-group nav pull-right">
         	<li>
         	<span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">Commit</span>
-        	<span class="btn btn-info"  onclick="javascript:window.location.href='/project/download/${svgname}'">Save as</span>
+        	<span class="btn btn-info"  onclick="javascript:window.location.href='/${template}/project/download/${svgname}'">Save as</span>
         	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>
@@ -384,10 +385,7 @@
             }
             
             function postsvg(svgname,dragData){
-            	//$.each(dragData,function(index,value){
-     			//	console.log("#nodeId:",value.id);
-     			//	saveSourceFileDialog(value.id);
-				//});
+            	var template=$("#template").val();
 				$.each(mapData,function(name,value) {
 					console.log("#name:"+name+",value:"+value);
      				saveSourceFileDialog(name);
@@ -396,7 +394,7 @@
 				target.chart=dragData;
 				console.log("#target:",target);
             	$.ajax({
-        			url:"/project/postSvg",
+        			url:"/"+template+"/project/postSvg",
         			type:"post",
         			dataType:"json",
         			data:{svgName:svgname,svg:JSON.stringify(target)},
@@ -428,8 +426,9 @@
 			
             
             function getsvg(svgname){
+            	var template=$("#template").val();
             	$.ajax({
-        			url:"/project/getSvg",
+        			url:"/"+template+"/project/getSvg",
         			type:"get",
         			dataType:"json",
         			data:{svgName:svgname},

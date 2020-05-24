@@ -488,9 +488,7 @@
 	<div id="spark-canvas"></div>
 	
 	<div id="spark-model" style="display:none;">
-    	<#include "spark/sourceFile.ftl">
-    	<#include "spark/map.ftl">
-    	<#include "spark/sinkFile.ftl">
+    	
 	</div>
 	
    

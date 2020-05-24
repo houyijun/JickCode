@@ -1,5 +1,5 @@
-
-<form  enctype="multipart/form-data" action="/jnode/import.do" accept-charset="UTF-8" method="post">
+<input class="hidden type="text" id="template" value="${template}"></input>
+<form  enctype="multipart/form-data" action="/${template}/jnode/import.do" accept-charset="UTF-8" method="post">
    	<fieldset>
         <h3>Uploading jnodes file</h3>
         <div class="file-loading">

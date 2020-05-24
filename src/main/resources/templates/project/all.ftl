@@ -15,7 +15,7 @@
       
       <#list svglist as node>
       <tr>
-			<td><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-remove text-danger" ></i></a>${node_index+1}</td>
+			<td><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
             <td><a href="/project/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">

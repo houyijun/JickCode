@@ -1,53 +1,26 @@
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
-	<div class="preview">Model List</div>
-<div class="view">
-  <table class="table" contenteditable="false">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Model Name</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-      
-      <#list nodes as node>
-      <tr>
-			<td><a onclick="del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
-            <td><a href="/model/edit/${node}">${node!''}</a></td>
-            <td>
-            <ul class="list-unstyled list-inline">
-            	<li>
-               		<span><a href="/model/download?name=${node}"><i class="glyphicon glyphicon-download" ></i></a></span>   
-              	</li>
-             </ul>        
-            </td>
-      <tr>
-	  </#list>
+	<div class="preview">模板列表</div>
 
-      </tbody>
-    </table>
-	</div>
+<div class="box box-element ui-draggable" style="display: block;"> 
+	<div class="view">
+         <ul class="thumbnails">
+            <#list templates as template>
+             <li class="span4" onclick="window.location.href='/${template}/info'">
+               <div class="thumbnail">
+                 <div class="caption">
+                     <h4>${template}</h4>
+                  </div>
+                </div>
+               </div>
+            </li>
+            </#list>
+        </ul>
+     </div>
 </div>
 
 <script>
-function del(node){
-    if(confirm("确定要删除吗？")) {
-        $.ajax({
-        			url:"/model/delete",
-        			type:"post",
-        			dataType:"json",
-        			data:{name:node},
-        			success:function(res){
-                    	console.log(res);
-                    	window.location.reload();                  
-            		}
-    			});
-    } 
-}
-
 function show(){
 	$("#myModal").modal({
        		show: true,
@@ -59,7 +32,7 @@ function submit(){
 	var name=$("#myModal input[name=modelname]").val();
 	console.log(name);
 	 $.ajax({
-        			url:"/model/add",
+        			url:"/template/add",
         			type:"post",
         			dataType:"json",
         			data:{name:name},

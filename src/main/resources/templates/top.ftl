@@ -20,9 +20,7 @@
 		</ul>
 		<ul class="nav" id="menu-layoutit" style="padding-top:15px;">
 			<li class="menu-spark" id="menu-spark">			
-				<span id="menu-project" class="menu" onClick="location.href='/project/all'">Projects</span>
-				<span id="menu-jnode" class="menu" onClick="location.href='/jnode/all'">Jnodes</span>
-				<span id="menu-model" class="menu" onClick="location.href='/model/all'">Models</span>
+				<span id="menu-project" class="menu" onClick="location.href='/'">Home</span>
 				
 		
 				<div class="btn-group hidden" data-toggle="buttons-radio">

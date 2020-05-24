@@ -1,4 +1,5 @@
-<form  action="/jnode/edit.do" accept-charset="UTF-8" method="post">
+<input class="hidden type="text" id="template" value="${template}"></input>
+<form  action="/${template}/jnode/edit.do" accept-charset="UTF-8" method="post">
    	<fieldset>
 		<legend contenteditable="true">编辑Jnode</legend>
 		<label contenteditable="true">名称</label>

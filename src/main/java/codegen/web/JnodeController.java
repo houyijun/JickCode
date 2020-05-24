@@ -24,7 +24,6 @@ import codegen.spark.db.KVDB;
 import codegen.spark.service.JickCodeService;
 
 @Controller
-@RequestMapping("/jnode")
 public class JnodeController {
 	private static final Logger LOG = LoggerFactory.getLogger(JnodeController.class);
 
@@ -34,16 +33,18 @@ public class JnodeController {
 	@Autowired
 	JickCodeService jickCodeService;
 
-	@RequestMapping(value = { "all" })
-	public String all(Map<String, Object> map) {
+	@RequestMapping(value = { "/{template}/jnode/all" })
+	public String all(@PathVariable String template,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/jnode/all.ftl");
-		List<String> jnodeNames=kvDB.getKeys(KVDB.JNODE);
+		List<String> jnodeNames=kvDB.getTemplateKeys(template,KVDB.JNODE);
 		map.put("jnodelist",jnodeNames);
 		return "/frame";
 	}
 	
-	@RequestMapping(value = { "new" })
-	public String jnode_new(Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/jnode/new" })
+	public String jnode_new(@PathVariable String template,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/jnode/edit.ftl");
 		map.put("jnodename","");
 		map.put("dialog","");
@@ -52,11 +53,12 @@ public class JnodeController {
 	}
 	
 	
-	@RequestMapping(value = { "edit/{jnodename}" })
-	public String edit(@PathVariable String jnodename,Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/jnode/edit/{jnodename}" })
+	public String edit(@PathVariable String template,@PathVariable String jnodename,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/jnode/edit.ftl");
 		map.put("jnodename",jnodename);
-		String json =kvDB.get(KVDB.JNODE, jnodename);
+		String json =kvDB.getTemplate(template,KVDB.JNODE, jnodename);
 		
 		LOG.info("jnode内容:{}",json);
 		if (StringUtils.isNotEmpty(json)) {
@@ -73,8 +75,8 @@ public class JnodeController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "edit.do", method = { RequestMethod.POST })
-	public String edit_do(HttpServletRequest request) {
+	@RequestMapping(value = "{template}/jnode/edit.do", method = { RequestMethod.POST })
+	public String edit_do(@PathVariable String template,HttpServletRequest request) {
 		String name = request.getParameter("name");
 		String data = request.getParameter("data");
 		String props = request.getParameter("propdialog");
@@ -83,15 +85,16 @@ public class JnodeController {
 		json.put("dialog",props);
 		String jnodeData=json.toJSONString();
 		LOG.info("###uploadJnode name={},jnodeData={}", name,jnodeData);
-		kvDB.saveOrUpdate(KVDB.JNODE, name,jnodeData);
-		return "forward:/jnode/all";
+		kvDB.updateTemplate(template,KVDB.JNODE, name,jnodeData);
+		return "forward:/"+template+"/jnode/all";
 	}
 	
-	@RequestMapping(value = "delete", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/jnode/delete", method = { RequestMethod.POST })
 	@ResponseBody
-	public String deleteJnode(HttpServletRequest request) {
+	public String deleteJnode(@PathVariable String template,HttpServletRequest request) {
 		String node = request.getParameter("node");
-		boolean success=kvDB.del(KVDB.JNODE,node);
+		LOG.info("delete node:{},{}",template,node);
+		boolean success=kvDB.delTemplate(template,KVDB.JNODE,node);
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", String.valueOf(success));
 		return json.toJSONString();
 	}
@@ -99,10 +102,10 @@ public class JnodeController {
 	/**
 	 * 导出所有jnode到单个文件
 	 */
-	@RequestMapping("download")
-	public void download(HttpServletResponse response) {
+	@RequestMapping("{template}/jnode/download")
+	public void download(@PathVariable String template,HttpServletResponse response) {
 		String outFile="nodes.json";
-		Map<String,String> nodes =kvDB.getAll(KVDB.JNODE);
+		Map<String,String> nodes =kvDB.getTemplateAll(template,KVDB.JNODE);
 		if (nodes==null) {
 			Funcs.exportCodeFile(response,outFile,"" );
 			return;
@@ -115,12 +118,12 @@ public class JnodeController {
 	 * 导出单个Jnode
 	 * @param response
 	 */
-	@RequestMapping("downsingle")
-	public void downsingle(HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping("{template}/jnode/downsingle")
+	public void downsingle(@PathVariable String template,HttpServletRequest request,HttpServletResponse response) {
 		String node = request.getParameter("node");		
 		String outFile=node+".txt";
 		
-		String txt =kvDB.get(KVDB.JNODE,node);
+		String txt =kvDB.getTemplate(template,KVDB.JNODE,node);
 		if (txt==null) {
 			txt="";
 		}
@@ -132,8 +135,9 @@ public class JnodeController {
 	
 	
 	
-	@RequestMapping(value = { "import" })
-	public String importpage(Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/jnode/import" })
+	public String importpage(@PathVariable String template,Map<String, Object> map) {
+		map.put("template", template);
 		map.put("divname", "/jnode/import.ftl");
 		return "/frame";
 	}
@@ -143,22 +147,22 @@ public class JnodeController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("import.do")
-	public String import_do(@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
+	@RequestMapping("{template}/jnode/import.do")
+	public String import_do(@PathVariable String template,@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
 		try {
 			String content = new String(file.getBytes());
 			LOG.info("上传名称={},文件内容={}",file.getName(),content);
 			Map<String,String> map =JSONObject.parseObject(content).toJavaObject(Map.class);
 			if (map!=null) {
 				for (String key:map.keySet()) {
-					kvDB.saveOrUpdate(KVDB.JNODE,key,map.get(key));
+					kvDB.updateTemplate(template,KVDB.JNODE,key,map.get(key));
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/jnode/all";
+		return "redirect:/"+template+"/jnode/all";
 	}
 	
 }
