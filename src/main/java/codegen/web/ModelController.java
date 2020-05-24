@@ -41,7 +41,6 @@ public class ModelController {
 		try {
 			String modelname = request.getParameter("name");
 			String modelfile = new String(file.getBytes());
-			LOG.info("上传名称={},文件内容={}",modelname,modelfile);
 			kvDB.updateTemplate(template,KVDB.MODEL,modelname,modelfile);
 
 		} catch (Exception e) {
