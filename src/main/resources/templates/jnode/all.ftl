@@ -32,8 +32,11 @@
             <td>
             
             <ul class="list-unstyled list-inline">
+            <li><span> <i onclick="showRename('${node}');" class="glyphicon glyphicon-edit text-info" ></i></span>
+            
+            </li>
             <li>
-             
+                 
             <span><a href="/${template}/jnode/downsingle?node=${node}"><i class="glyphicon glyphicon-download" ></i></a> </span> 
             
               </li>
@@ -65,4 +68,55 @@ function deljnode(node){
     } 
 }
 
+
+function showRename(oldName){
+	$("#renameModal input[name=oldName]").val(oldName)
+	$("#renameModal").modal({
+       		show: true,
+       		backdrop:'static'
+    })
+}
+
+function rename(){
+	var template=$("#template").val();
+	var newName=$("#renameModal input[name=newName]").val();
+	var oldName=$("#renameModal input[name=oldName]").val();
+	console.log(oldName,newName);
+	 $.ajax({
+       		url:"/"+template+"/jnode/rename",
+       		type:"post",
+       		dataType:"json",
+       		data:{oldName:oldName,newName:newName},
+       		success:function(res){
+               	console.log(res);
+               	if (res.code=="0"){
+               		window.location.reload();
+               	}else{
+               		alert(res.msg);
+               	}                  
+       		}
+    });
+}
 </script>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title" id="myModalLabel">重命名</h4>
+           </div>
+        	<div class="modal-body"><span>新名称</span>
+				<input type="text" name="oldName" class="hidden">
+				<input type="text" name="newName" class="spark-data btn form-control"  width="60px">
+     		</div>
+  		
+           <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               <button type="button" class="btn btn-primary" onclick="rename()">提交</button>
+           </div>
+       </div><!-- /.modal-content -->
+   </div><!-- /.modal -->
+ </div>

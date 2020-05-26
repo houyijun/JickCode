@@ -12,7 +12,7 @@
                  <div class="caption">
                      <span><a href="/${template}/info">${template}</a></span>
                      <span class="pull-right"> <i onclick="del('${template}');" class="glyphicon glyphicon-trash text-danger" ></i></span>
-                      <span class="pull-right" style="padding-right:10px;"> <i onclick="showRename('${template}');" class="glyphicon glyphicon-edit text-info" ></i></span>
+                      <span class="pull-right hidden" style="padding-right:10px;"> <i onclick="showRename('${template}');" class="glyphicon glyphicon-edit text-info" ></i></span>
                   </div>
                  
                </div>
@@ -39,17 +39,8 @@ function del(template){
     } 
 }
 
-
 function show(){
 	$("#myModal").modal({
-       		show: true,
-       		backdrop:'static'
-    })
-}
-
-function showRename(template){
-	$("#renameModal input[name=oldName]").val(template)
-	$("#renameModal").modal({
        		show: true,
        		backdrop:'static'
     })
@@ -71,6 +62,15 @@ function submit(){
                	}                  
        		}
     });
+}
+
+
+function showRename(oldName){
+	$("#renameModal input[name=oldName]").val(oldName)
+	$("#renameModal").modal({
+       		show: true,
+       		backdrop:'static'
+    })
 }
 
 function rename(){

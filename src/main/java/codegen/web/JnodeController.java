@@ -114,6 +114,16 @@ public class JnodeController {
 		Funcs.exportCodeFile(response,outFile,code );
 	}
 	
+	@RequestMapping(value = "{template}/jnode/rename", method = { RequestMethod.POST })
+	@ResponseBody
+	public String rename(@PathVariable String template,HttpServletRequest request) {
+		String oldName = request.getParameter("oldName");
+		String newName = request.getParameter("newName");
+		kvDB.renameTemplateKey(template, KVDB.JNODE, oldName,newName);
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", "");
+		return json.toJSONString();
+	}
+	
 	/**
 	 * 导出单个Jnode
 	 * @param response
