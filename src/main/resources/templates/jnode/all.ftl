@@ -1,7 +1,7 @@
+	<div class="h4">JNode配置【${template}】 </div>
 	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" href="/${template}/jnode/new" rel="table-hover"><i class="glyphicon glyphicon-plus">Create</i></a>
-		
 	</span>
 	<ul class="btn-group nav pull-right">
        	<li>
@@ -13,7 +13,6 @@
        	</li>
     </ul>
 	
-	<div class="preview">Jnode List</div>
 <div class="view">
   <table class="table" contenteditable="false">
       <thead>

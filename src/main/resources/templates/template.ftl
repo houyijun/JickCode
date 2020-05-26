@@ -13,11 +13,18 @@
                      <span><a href="/${template}/project/all">${template}</a></span>
                                       
                      <span class="pull-right"> 
-                        <i onclick="showRename('${template}');" class="hidden glyphicon glyphicon-edit text-info" ></i>
-                        <a href="/${template}/info"> <i  class="glyphicon glyphicon-th-list text-info" >配置...</i></a>
-                             
-                        <i onclick="del('${template}');" class="glyphicon glyphicon-trash text-danger" ></i>
-                             
+                     
+                     <ul class="list-unstyled list-inline">
+            		<li>
+               		<span><a href="/${template}/jnode/all"><i class="glyphicon glyphicon-road" ></i></a></span>   
+              		</li>
+              		<li>
+               		<span><a href="/${template}/model/all"><i class="glyphicon glyphicon-list-alt" ></i></a></span>   
+              		</li>
+              		<li>
+               		<span><a onclick="del('${template}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a></span>   
+              		</li>
+             		</ul>   
                             
                      </span>
                  
@@ -73,33 +80,6 @@ function submit(){
 }
 
 
-function showRename(oldName){
-	$("#renameModal input[name=oldName]").val(oldName)
-	$("#renameModal").modal({
-       		show: true,
-       		backdrop:'static'
-    })
-}
-
-function rename(){
-	var newName=$("#renameModal input[name=newName]").val();
-	var oldName=$("#renameModal input[name=oldName]").val();
-	console.log(oldName,newName);
-	 $.ajax({
-       		url:"/template/rename",
-       		type:"post",
-       		dataType:"json",
-       		data:{oldName:oldName,newName:newName},
-       		success:function(res){
-               	console.log(res);
-               	if (res.code=="0"){
-               		window.location.reload();
-               	}else{
-               		alert(res.msg);
-               	}                  
-       		}
-    });
-}
 
 </script>
 

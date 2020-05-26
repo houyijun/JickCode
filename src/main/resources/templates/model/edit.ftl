@@ -1,7 +1,6 @@
-
 <form  enctype="multipart/form-data" action="/${template}/model/import.do" accept-charset="UTF-8" method="post">
    	<fieldset>
-		<legend contenteditable="true">${modelname!''}
+		<legend contenteditable="true">代码模板配置【${template!''}】
 		 </legend>
 		 <input type="text" placeholder="Type something…" class="hidden" name="name" value="${modelname}">
 		

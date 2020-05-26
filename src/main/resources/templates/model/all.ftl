@@ -1,8 +1,8 @@
+	<div class="h4">代码模板配置【${template}】 </div>
 	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
-	<div class="preview">Model List</div>
 <div class="view">
   <table class="table" contenteditable="false">
       <thead>

@@ -50,15 +50,24 @@ public class TemplateController {
 	}
 	
 	@RequestMapping(value = { "{template}/info" })
-	public String detail(@PathVariable String template,Map<String, Object> map) {
+	public String info(@PathVariable String template,Map<String, Object> map) {
 		map.put("divname", "/templateinfo.ftl");
 		map.put("template", template);
 		
+		//add jnode all
+//		map.put("divname", "/jnode/all.ftl");
+		List<String> jnodeNames=kvDB.getTemplateKeys(template,KVDB.JNODE);
+		map.put("jnodelist",jnodeNames);
+		
+		// add model all
+//		map.put("divname", "/model/all.ftl");
+		List<String> nodes= kvDB.getTemplateKeys(template,KVDB.MODEL);
+		map.put("nodes",nodes);
+		
+		// old code
 		map.put("menu","projects");
-		List<String> jnodeNames =kvDB.getTemplateKeys(template,KVDB.SVG);
-		map.put("svglist", jnodeNames);
-		List<String> codetypes=kvDB.getTemplateKeys(template,KVDB.MODEL);
-		map.put("codetypes", codetypes);
+//		List<String> codetypes=kvDB.getTemplateKeys(template,KVDB.MODEL);
+//		map.put("codetypes", codetypes);
 		return "/frame";
 	}
 	
