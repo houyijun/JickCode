@@ -88,17 +88,22 @@ public class JickCodeService {
 	 *            整个svg图的信息，防止有用到上下文的地方。
 	 * @return
 	 */
-	public String transfer(String template,String jnodeName, SVGNode node, SVG svg,Map<String,SVGNode> svgMap) throws Exception {
-		if (jnodeName==null) {
+	public String transfer(String template, String jnodeName, SVGNode node, SVG svg, Map<String, SVGNode> svgMap)
+			throws Exception {
+		if (jnodeName == null) {
 			LOG.error("jnode名称为空");
 			return null;
 		}
-		String jnodeModel =kvDB.getTemplate(template,KVDB.JNODE,jnodeName);
+		String jnodeModel = kvDB.getTemplate(template, KVDB.JNODE, jnodeName);
 
-		 JSONObject jnodeObj = JSONObject.parseObject(jnodeModel);
-		String ftlText = (String)jnodeObj.get("ftl");
+		JSONObject jnodeObj = JSONObject.parseObject(jnodeModel);
+		if (!jnodeObj.containsKey("ftl")) {
+			LOG.error("jnode代码模板为空");
+			return null;
+		}
+		String ftlText = (String) jnodeObj.get("ftl");
 
-		if (ftlText==null) {
+		if (ftlText == null) {
 			LOG.error("jnode代码模板为空");
 			return null;
 		}
@@ -110,69 +115,71 @@ public class JickCodeService {
 		node.setFathers(fathers);
 
 		Map<String, Object> nodeMap = new HashMap<String, Object>();
-		nodeMap.put("nodetype",getNodeName(node));
+		nodeMap.put("nodetype", getNodeName(node));
 		nodeMap.put("node", node);
-		nodeMap.put("props",props);
+		nodeMap.put("props", props);
 		nodeMap.put("params", svg.getParams());
-		nodeMap.put("parents",getParents(node,svgMap));
+		nodeMap.put("parents", getParents(node, svgMap));
 		// 现在可以输出代码了
 		String str = str2Str(ftlText, nodeMap);
 
 		return str;
 	}
-	
+
 	/**
 	 * 父节点列表，处理排序后
+	 * 
 	 * @param node
 	 * @param svgMap
 	 * @return
 	 * @throws Exception
 	 */
-	public List<SVGNode> getParents(SVGNode node, Map<String,SVGNode> svgMap) throws Exception {
-		List<SVGNode> parents=new ArrayList<SVGNode>();
-		if (node.getLinked().size()<1) {
+	public List<SVGNode> getParents(SVGNode node, Map<String, SVGNode> svgMap) throws Exception {
+		List<SVGNode> parents = new ArrayList<SVGNode>();
+		if (node.getLinked().size() < 1) {
 			return parents;
 		}
-		for(int i=0;i<node.getLinked().size();i++) {
-			JSONObject linked=(JSONObject)node.getLinked().get(i);
-			String name=linked.getString("name");
-			String parent=name.split("\\|")[0];
+		for (int i = 0; i < node.getLinked().size(); i++) {
+			JSONObject linked = (JSONObject) node.getLinked().get(i);
+			String name = linked.getString("name");
+			String parent = name.split("\\|")[0];
 			if (svgMap.containsKey(parent)) {
 				parents.add(svgMap.get(parent));
-			}					
+			}
 		}
 		return parents;
 	}
 
-	public String toCode(String template,SVG svg) throws Exception {
-		Map<String,SVGNode> svgMap=getMap(svg);
+	public String toCode(String template, SVG svg) throws Exception {
+		Map<String, SVGNode> svgMap = getMap(svg);
 		String code = "";
 		if (svg.getNodes() != null) {
 			Queue<SVGNode> queue = SVGOpe.genQueue(svg);
-			Iterator<SVGNode> iter=queue.iterator();
+			Iterator<SVGNode> iter = queue.iterator();
 			while (iter.hasNext()) {
-				SVGNode node=iter.next();
+				SVGNode node = iter.next();
 				String subCode = "";
 				try {
-					subCode = transfer(template,node.getName(), node, svg,svgMap);
+					subCode = transfer(template, node.getName(), node, svg, svgMap);
 				} catch (Exception e) {
 					e.printStackTrace();
-					subCode = "##Code exception##:" + node.getName() +","+ e.getLocalizedMessage();
+					subCode = "##Code exception##:" + node.getName() + "," + e.getLocalizedMessage();
 				}
 				code = code + subCode + "\n";
 			}
-			
-//			for (int i = 0; i < svg.getNodes().size(); i++) {
-//				SVGNode node = svg.getNodes().get(i);
-//				String subCode = "";
-//				try {
-//					subCode = transfer(node.getName(), node, svg);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					subCode = "##Code exception##:" + node.getName() +","+ e.getLocalizedMessage();
-//				}
-//				code = code + subCode + "\n";
-//			}
+
+			// for (int i = 0; i < svg.getNodes().size(); i++) {
+			// SVGNode node = svg.getNodes().get(i);
+			// String subCode = "";
+			// try {
+			// subCode = transfer(node.getName(), node, svg);
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// subCode = "##Code exception##:" + node.getName() +","+
+			// e.getLocalizedMessage();
+			// }
+			// code = code + subCode + "\n";
+			// }
 		}
 		return code;
 	}
@@ -192,11 +199,11 @@ public class JickCodeService {
 	private String getNodeName(SVGNode node) {
 		return node.getName();
 	}
-	
-	private Map<String,SVGNode> getMap(SVG svg){
-		Map<String,SVGNode> map=new HashMap<String,SVGNode>();
-		for (SVGNode node:svg.getNodes()) {
-			map.put(node.getNodeId(),node);
+
+	private Map<String, SVGNode> getMap(SVG svg) {
+		Map<String, SVGNode> map = new HashMap<String, SVGNode>();
+		for (SVGNode node : svg.getNodes()) {
+			map.put(node.getNodeId(), node);
 		}
 		return map;
 	}
