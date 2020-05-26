@@ -29,16 +29,16 @@ public class KVDB {
 		}
 		if (con!=null) {
 			if (!KVSqlliteUtil.isTableExist(con, TEMPLATE)) {
-				KVSqlliteUtil.createTemplateTable(con, TEMPLATE);
+				KVSqlliteUtil.createTable(con, TEMPLATE);
 			}
 			if (!KVSqlliteUtil.isTableExist(con, SVG)) {
-				KVSqlliteUtil.createTable(con, SVG);
+				KVSqlliteUtil.createTemplateTable(con, SVG);
 			}
 			if (!KVSqlliteUtil.isTableExist(con, JNODE)) {
-				KVSqlliteUtil.createTable(con, JNODE);
+				KVSqlliteUtil.createTemplateTable(con, JNODE);
 			}
 			if (!KVSqlliteUtil.isTableExist(con, MODEL)) {
-				KVSqlliteUtil.createTable(con, MODEL);
+				KVSqlliteUtil.createTemplateTable(con, MODEL);
 			}
 		}
 
@@ -62,6 +62,17 @@ public class KVDB {
 		} else {
 			KVSqlliteUtil.updateTemplateKVValue(con, template,tableName, key, value);
 		}
+	}
+	
+	/**
+	 * 重命名
+	 * @param template
+	 * @param tableName
+	 * @param oldKey
+	 * @param newKey
+	 */
+	public void renameTemplateKey(String template,String tableName,String oldKey,String newKey) {
+		KVSqlliteUtil.renameTemplateKV(con, template,tableName, oldKey,newKey);
 	}
 
 	public Map<String, String> getTemplateAll(String template,String tableName) {
@@ -95,6 +106,10 @@ public class KVDB {
 		} else {
 			KVSqlliteUtil.updateKVValue(con, TEMPLATE, key, value);
 		}
+	}
+	
+	public void rename(String oldKey,String newKey) {
+		KVSqlliteUtil.rename(con, TEMPLATE, oldKey,newKey);
 	}
 
 	public Map<String, String> getAll() {

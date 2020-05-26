@@ -39,6 +39,16 @@ public class TemplateController {
 		return json.toJSONString();
 	}
 	
+	@RequestMapping(value = "template/rename", method = { RequestMethod.POST })
+	@ResponseBody
+	public String rename(HttpServletRequest request) {
+		String oldName = request.getParameter("oldName");
+		String newName = request.getParameter("newName");
+		kvDB.rename(oldName,newName);
+		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", "");
+		return json.toJSONString();
+	}
+	
 	@RequestMapping(value = { "{template}/info" })
 	public String detail(@PathVariable String template,Map<String, Object> map) {
 		map.put("divname", "/templateinfo.ftl");

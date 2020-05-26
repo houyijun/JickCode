@@ -40,7 +40,7 @@ public class KVSqlliteUtil {
 		return con;
 	}
 
-	public static boolean createTemplateTable(Connection con,  String tableName) {
+	public static boolean createTable(Connection con,  String tableName) {
 		try {
 			Statement stat = con.createStatement();
 			stat.executeUpdate("create table " + tableName + " (key TEXT, value TEXT); ");
@@ -51,7 +51,7 @@ public class KVSqlliteUtil {
 		}
 	}
 	
-	public static boolean createTable(Connection con,  String tableName) {
+	public static boolean createTemplateTable(Connection con,  String tableName) {
 		try {
 			Statement stat = con.createStatement();
 			stat.executeUpdate("create table " + tableName + " (template TEXT,key TEXT, value TEXT); ");
@@ -129,6 +129,20 @@ public class KVSqlliteUtil {
 
 	}
 
+	public static boolean rename(Connection con, String tableName, String oldKey, String newKey) {
+		newKey=newKey.replaceAll("'","\'");
+		PreparedStatement prep = null;
+		try {
+			prep = con.prepareStatement("update " + tableName + " set key='"+newKey+"' where key='"+oldKey+"';");
+			prep.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
 	public static boolean updateKVValue(Connection con, String tableName, String key, String value) {
 		value=value.replaceAll("'","\'");
 		String sql = "update " + tableName + " set value='" + value + "' where key='" + key + "';";
@@ -141,7 +155,6 @@ public class KVSqlliteUtil {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	public static Map<String, String> getAllKVs(Connection connection, String tableName)  {
@@ -238,6 +251,19 @@ public class KVSqlliteUtil {
 			return false;
 		}
 
+	}
+	
+	public static boolean renameTemplateKV(Connection con, String template,String tableName, String oldKey, String newKey) {
+		newKey=newKey.replaceAll("'","\'");
+		PreparedStatement prep = null;
+		try {
+			prep = con.prepareStatement("update " + tableName + " set key='"+newKey+"' where key='"+oldKey+"' and template='"+template+"'");
+			prep.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static boolean updateTemplateKVValue(Connection con,String template, String tableName, String key, String value) {

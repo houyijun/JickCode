@@ -10,10 +10,8 @@ import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import codegen.spark.service.JickCodeService;
 
 public class SVGOpe {
 	private static final Logger LOG = LoggerFactory.getLogger(SVGOpe.class);
