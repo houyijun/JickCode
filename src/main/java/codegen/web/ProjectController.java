@@ -130,24 +130,33 @@ public class ProjectController {
 		}
 	}
 	
-	@RequestMapping(value = "{template}/project/download/{name}")
-	public void download(@PathVariable String template,@PathVariable String name,HttpServletResponse response) {
-		String outFile=name+".proj";
-		String svg=kvDB.getTemplate(template,KVDB.SVG,name);
-		if (svg==null) {
-			svg="null";
+	@RequestMapping(value = "{template}/project/download/{svg}")
+	public void download(@PathVariable String template,@PathVariable String svg,HttpServletResponse response) {
+		String outFile=svg+".proj";
+		String svgContent=kvDB.getTemplate(template,KVDB.SVG,svg);
+		if (svgContent==null) {
+			svgContent="null";
 		}
-		Funcs.exportCodeFile(response,outFile,svg );
+		Funcs.exportCodeFile(response,outFile,svgContent );
 	}
-	@RequestMapping(value = { "{template}/project/export/{svg}/{codetype}" })
-	public String export(@PathVariable String template,@PathVariable String svg, @PathVariable String codetype, Map<String, Object> map) {
+	@RequestMapping(value = { "{template}/project/export/{svg}" })
+	public String export(@PathVariable String template,@PathVariable String svg, Map<String, Object> map) {
 		map.put("template",template);
 		map.put("divname", "/project/export.ftl");
-		map.put("codetype", codetype);
 		map.put("svg", svg);
-		String code = getCode(template,svg,codetype);
+		String code = getCode(template,svg,template);
 		map.put("code", code);
 		return "/frame";
+	}
+	
+	@RequestMapping(value = "{template}/project/exportcode/{svg}")
+	public void exportCode(@PathVariable String template,@PathVariable String svg,HttpServletResponse response) {
+		String outFile=svg+".txt";
+		String code = getCode(template,svg,template);
+		if (code==null) {
+			code="null";
+		}
+		Funcs.exportCodeFile(response,outFile,code );
 	}
 	
 	private String getCode(String template,String name,String type) {

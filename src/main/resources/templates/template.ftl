@@ -19,7 +19,7 @@
                		<span><a href="/${template}/jnode/all"><i class="glyphicon glyphicon-road" ></i></a></span>   
               		</li>
               		<li>
-               		<span><a href="/${template}/model/all"><i class="glyphicon glyphicon-list-alt" ></i></a></span>   
+               		<span><a href="/${template}/model/edit"><i class="glyphicon glyphicon-list-alt" ></i></a></span>   
               		</li>
               		<li>
                		<span><a onclick="del('${template}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a></span>   

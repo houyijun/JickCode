@@ -8,8 +8,8 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Jnode Name</th>
-          <th>Export Code</th>
+          <th>工程名称</th>
+          <th>生成代码</th>
         </tr>
       </thead>
       <tbody>
@@ -21,9 +21,14 @@
             <td>
             <ul class="list-unstyled list-inline">
             <li>
-            <span><a class="text-muted" href="/${template}/project/export/${node}"><i class="glyphicon glyphicon-download" ></i></a></span>
+            <span><a class="text-muted" href="/${template}/project/export/${node}"><i class="glyphicon glyphicon-eye-open" ></i></a></span>
             </li>
-            
+            <li>
+            <span><a class="text-muted" href="/${template}/project/exportcode/${node}"><i class="glyphicon glyphicon-download" ></i></a></span>
+            </li>
+            <li>
+            <span><a class="text-muted" href="/${template}/project/download/${node}"><i class="glyphicon glyphicon-folder-close" ></i></a></span>
+            </li>
             </ul>
             </td>
       <tr>

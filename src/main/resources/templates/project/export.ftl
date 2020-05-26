@@ -1,6 +1,6 @@
 <div class="view">
-<span><a href="/${template}/project/download?type=${codetype}&name=${svg}">Download generated code</a></span>  
+<span><a href="/${template}/project/exportcode/${svg}">下载代码</a></span>  
 </div>
 
-<span class="help-block" contenteditable="true">Code of ${svg}[${codetype}]</span>
+<span class="help-block" contenteditable="true">Code of ${svg}[${template}]</span>
 <textarea id="data" name="data" rows="20" class="form-control" >${code}</textarea>

@@ -2,7 +2,6 @@
    	<fieldset>
 		<legend contenteditable="true">代码模板配置【${template!''}】
 		 </legend>
-		 <input type="text" placeholder="Type something…" class="hidden" name="name" value="${modelname}">
 		
         <h3>Uploading model file</h3>
         <div class="file-loading">
