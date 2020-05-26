@@ -10,10 +10,18 @@
              <li class="span4">
                <div class="thumbnail">
                  <div class="caption">
-                     <span><a href="/${template}/info">${template}</a></span>
-                     <span class="pull-right"> <i onclick="del('${template}');" class="glyphicon glyphicon-trash text-danger" ></i></span>
-                      <span class="pull-right hidden" style="padding-right:10px;"> <i onclick="showRename('${template}');" class="glyphicon glyphicon-edit text-info" ></i></span>
-                  </div>
+                     <span><a href="/${template}/project/all">${template}</a></span>
+                                      
+                     <span class="pull-right"> 
+                        <i onclick="showRename('${template}');" class="hidden glyphicon glyphicon-edit text-info" ></i>
+                        <a href="/${template}/info"> <i  class="glyphicon glyphicon-th-list text-info" >配置...</i></a>
+                             
+                        <i onclick="del('${template}');" class="glyphicon glyphicon-trash text-danger" ></i>
+                             
+                            
+                     </span>
+                 
+                 </div>
                  
                </div>
             </li>

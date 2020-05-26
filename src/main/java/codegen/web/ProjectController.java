@@ -41,11 +41,8 @@ public class ProjectController {
 	public String all(@PathVariable String template,Map<String, Object> map) {
 		map.put("template",template);
 		map.put("divname", "/project/all.ftl");
-		map.put("menu","projects");
 		List<String> jnodeNames =kvDB.getTemplateKeys(template,KVDB.SVG);
 		map.put("svglist", jnodeNames);
-		List<String> codetypes=kvDB.getTemplateKeys(template,KVDB.MODEL);
-		map.put("codetypes", codetypes);
 		return "/frame";
 	}
 

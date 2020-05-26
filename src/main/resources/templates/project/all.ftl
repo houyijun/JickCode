@@ -1,3 +1,4 @@
+	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 	</span>
@@ -16,13 +17,11 @@
       <#list svglist as node>
       <tr>
 			<td><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
-            <td><a href="/project/edit/${node}">${node!''}</a></td>
+            <td><a href="/${template}/project/edit/${node}">${node!''}</a></td>
             <td>
             <ul class="list-unstyled list-inline">
             <li>
-            <#list codetypes as codetype>
-            <span><a class="text-muted" href="/project/export/${node}/${codetype}"><i class="glyphicon glyphicon-new-window" ></i>${codetype}</a></span>
-            </#list>
+            <span><a class="text-muted" href="/${template}/project/export/${node}"><i class="glyphicon glyphicon-download" ></i></a></span>
             </li>
             
             </ul>
@@ -37,9 +36,10 @@
 
 <script>
 function del(node){
+	var template=$("#template").val();
     if(confirm("确定要删除吗？")) {
         $.ajax({
-        			url:"/project/delete",
+        			url:"/"+template+"/project/delete",
         			type:"post",
         			dataType:"json",
         			data:{node:node},
@@ -59,10 +59,11 @@ function show(){
 }
 
 function submit(){
+	var template=$("#template").val();
 	var name=$("#myModal input[name=name]").val();
 	console.log(name);
 	 $.ajax({
-        			url:"/project/add.do",
+        			url:"/"+template+"/project/add.do",
         			type:"post",
         			dataType:"json",
         			data:{name:name},
