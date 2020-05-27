@@ -1,8 +1,10 @@
+	<div class="h4">模板列表 </div>	
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建模板</i></a>
 	</span>
-	<div class="preview"><h2>模板列表</h2></div>
-
+	
+	<div class="view" style="padding-top:10px"></div>
+	
 <div class="box box-element ui-draggable" style="display: block;"> 
 	<div class="view">
          <ul class="thumbnails">
@@ -10,16 +12,19 @@
              <li class="span4">
                <div class="thumbnail">
                  <div class="caption">
-                     <span><a href="/${template}/project/all">${template}</a></span>
+                     <span>${template}</span>
                                       
                      <span class="pull-right"> 
                      
                      <ul class="list-unstyled list-inline">
+                     <li>
+               		<span><a href="/${template}/project/all"><i class="glyphicon glyphicon-list" ></i></a></span>   
+              		</li>
             		<li>
-               		<span><a href="/${template}/jnode/all"><i class="glyphicon glyphicon-road" ></i></a></span>   
+               		<span><a href="/${template}/jnode/all"><i class="glyphicon glyphicon-dashboard" ></i></a></span>   
               		</li>
               		<li>
-               		<span><a href="/${template}/model/edit"><i class="glyphicon glyphicon-list-alt" ></i></a></span>   
+               		<span><a href="/${template}/model/edit"><i class="glyphicon glyphicon-wrench" ></i></a></span>   
               		</li>
               		<li>
                		<span><a onclick="del('${template}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a></span>   
