@@ -7,8 +7,35 @@ Project Name: JickCode
 
 然后JickCode就变成现在这样了。
 
-【待办项】
-1、模板节点jnode的自定义化支持。
-2、根据jnode优先级输出ftl的代码。
-3、前端jnode可配置化操作
+【JNode配置】
+JNode要配置两个东西，一个是modal对话框，定义该JNode节点有哪些属性，在html上如何展示的，样式如下：
+ <form class="form-horizontal">
+	<div class="control-group">
+	  <label class="control-label">Code format</label>
+		<div class="controls">
+			<input type="text" name="codename" class="spark-data" value="ss">
+		</div>
+	</div>
+</form>
+另一个是代码模板，兼容freemaker语法。${node}表示本节点。
+示例如下：
+val  myname="${node.props.myname}"
+val ${node.name}= spark.load("${node.props.myname}")
+
+【代码模板配置】
+每种代码模板包含一个输出代码的字符串样式，必须要有  ${code_generated} ，这代表了这个svg图整个的输出代码。可以添加自己的文本。比如：
+package myspark
+import org.apache.spark.*
+/**
+  Spark示例代码模板
+*/
+object SparkMain {
+  def main(args: Array[String]): Unit = {
+    // spark code模板  
+    ${code_generated} 
+  }
+}  
+【创建模板】
+支持创建多种模板，每种模板配置自己的JNode和代码模板。
+
 

@@ -4,7 +4,7 @@
     	<ul class="btn-group nav pull-right">
         	<li>
         	<span class="btn"  onclick="postsvg('${svgname}',dragData)"><i class="glyphicon glyphicon-ok text-warn">提交</i></span>
-        	<span class="btn"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'"><i class="glyphicon glyphicon-export text-warn">导出</i></span>
+        	<span class="btn"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'"><i class="glyphicon glyphicon-export text-warn">生成代码</i></span>
         	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>
