@@ -28,37 +28,51 @@ public class ModelController {
 
 	@Autowired
 	KVDB kvDB;
-	
 
-	// 导入
+	// 导入模板文件
 	@RequestMapping("{template}/model/import.do")
-	public String importModel_do(@PathVariable String template,@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request) {
+	public String importModel_do(@PathVariable String template, @RequestParam(value = "filename") MultipartFile file,
+			HttpServletRequest request) {
 		try {
 			String modelfile = new String(file.getBytes());
-			kvDB.updateTemplate(template,KVDB.MODEL,template,modelfile);
+			kvDB.updateTemplate(template, KVDB.MODEL, template, modelfile);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("导入代码模板异常:{}",e);
+			LOG.error("导入代码模板异常:{}", e);
 		}
-		return "redirect:/"+template+"/model/edit";
+		return "redirect:/" + template + "/model/edit";
+	}
+
+	// 导入模板文本
+	@RequestMapping("{template}/model/importContent.do")
+	public String importModel_do(@PathVariable String template,
+			@RequestParam(value = "modelContent") String modelContent, HttpServletRequest request) {
+		try {
+			kvDB.updateTemplate(template, KVDB.MODEL, template, modelContent);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("导入代码文本异常:{}", e);
+		}
+		return "redirect:/" + template + "/model/edit";
 	}
 
 	/**
 	 * 下载模板文件内容
+	 * 
 	 * @param name
 	 * @param response
 	 */
 	@RequestMapping("{template}/model/download")
-	public void download(@PathVariable String template,String name,HttpServletResponse response) {
-		String outFile=name+".txt";
-		String modelcontent=kvDB.getTemplate(template,KVDB.MODEL,name);
-		if (modelcontent==null) {
-			modelcontent="null";
+	public void download(@PathVariable String template, String name, HttpServletResponse response) {
+		String outFile = name + ".txt";
+		String modelcontent = kvDB.getTemplate(template, KVDB.MODEL, name);
+		if (modelcontent == null) {
+			modelcontent = "null";
 		}
-		Funcs.exportCodeFile(response,outFile,modelcontent );
+		Funcs.exportCodeFile(response, outFile, modelcontent);
 	}
-	
+
 	/**
 	 * 显示模板内容
 	 * 
@@ -67,12 +81,11 @@ public class ModelController {
 	 * @return
 	 */
 	@RequestMapping(value = { "{template}/model/edit" })
-	public String edit(@PathVariable String template,Map<String, Object> map) {
+	public String edit(@PathVariable String template, Map<String, Object> map) {
 		map.put("template", template);
 		map.put("divname", "/model/edit.ftl");
-		map.put("modelcontent",kvDB.getTemplate(template,KVDB.MODEL,template));
+		map.put("modelcontent", kvDB.getTemplate(template, KVDB.MODEL, template));
 		return "/frame";
 	}
-	
-	
+
 }

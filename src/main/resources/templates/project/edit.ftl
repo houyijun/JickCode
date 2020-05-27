@@ -3,8 +3,8 @@
  	<div class="view">
     	<ul class="btn-group nav pull-right">
         	<li>
-        	<span class="btn btn-info"  onclick="postsvg('${svgname}',dragData)">保存</span>
-        	<span class="btn btn-info"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'">代码</span>
+        	<span class="btn"  onclick="postsvg('${svgname}',dragData)"><i class="glyphicon glyphicon-ok text-danger"></i>提交</span>
+        	<span class="btn"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'"><i class="glyphicon glyphicon-export text-danger"></i>导出</span>
         	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>

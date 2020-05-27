@@ -95,10 +95,10 @@ public class JickCodeService {
 			return null;
 		}
 		String jnodeModel = kvDB.getTemplate(template, KVDB.JNODE, jnodeName);
-
+		
 		JSONObject jnodeObj = JSONObject.parseObject(jnodeModel);
 		if (!jnodeObj.containsKey("ftl")) {
-			LOG.error("jnode代码模板为空");
+			LOG.error("jnode代码模板为空:{},{}",template,jnodeName);
 			return null;
 		}
 		String ftlText = (String) jnodeObj.get("ftl");
@@ -163,23 +163,12 @@ public class JickCodeService {
 					subCode = transfer(template, node.getName(), node, svg, svgMap);
 				} catch (Exception e) {
 					e.printStackTrace();
+					LOG.error("transfer:{}",JSONObject.toJSONString(node));
 					subCode = "##Code exception##:" + node.getName() + "," + e.getLocalizedMessage();
 				}
 				code = code + subCode + "\n";
 			}
 
-			// for (int i = 0; i < svg.getNodes().size(); i++) {
-			// SVGNode node = svg.getNodes().get(i);
-			// String subCode = "";
-			// try {
-			// subCode = transfer(node.getName(), node, svg);
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// subCode = "##Code exception##:" + node.getName() +","+
-			// e.getLocalizedMessage();
-			// }
-			// code = code + subCode + "\n";
-			// }
 		}
 		return code;
 	}

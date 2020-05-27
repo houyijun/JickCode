@@ -31,7 +31,7 @@
             <td>
             
             <ul class="list-unstyled list-inline">
-            <li><span> <i onclick="showRename('${node}');" class="glyphicon glyphicon-edit text-info" ></i></span>
+            <li><span> <i onclick="showRename('${node}');" class="glyphicon glyphicon-plus text-info" ></i></span>
             
             </li>
             <li>
@@ -76,13 +76,13 @@ function showRename(oldName){
     })
 }
 
-function rename(){
+function clone(){
 	var template=$("#template").val();
 	var newName=$("#renameModal input[name=newName]").val();
 	var oldName=$("#renameModal input[name=oldName]").val();
 	console.log(oldName,newName);
 	 $.ajax({
-       		url:"/"+template+"/jnode/rename",
+       		url:"/"+template+"/jnode/clone",
        		type:"post",
        		dataType:"json",
        		data:{oldName:oldName,newName:newName},
@@ -105,7 +105,7 @@ function rename(){
        <div class="modal-content">
            <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-               <h4 class="modal-title" id="myModalLabel">重命名</h4>
+               <h4 class="modal-title" id="myModalLabel">复制</h4>
            </div>
         	<div class="modal-body"><span>新名称</span>
 				<input type="text" name="oldName" class="hidden">
@@ -114,7 +114,7 @@ function rename(){
   		
            <div class="modal-footer">
                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-               <button type="button" class="btn btn-primary" onclick="rename()">提交</button>
+               <button type="button" class="btn btn-primary" onclick="clone()">提交</button>
            </div>
        </div><!-- /.modal-content -->
    </div><!-- /.modal -->

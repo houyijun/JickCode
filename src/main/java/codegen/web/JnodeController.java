@@ -114,12 +114,16 @@ public class JnodeController {
 		Funcs.exportCodeFile(response,outFile,code );
 	}
 	
-	@RequestMapping(value = "{template}/jnode/rename", method = { RequestMethod.POST })
+	@RequestMapping(value = "{template}/jnode/clone", method = { RequestMethod.POST })
 	@ResponseBody
-	public String rename(@PathVariable String template,HttpServletRequest request) {
+	public String clone(@PathVariable String template,HttpServletRequest request) {
 		String oldName = request.getParameter("oldName");
 		String newName = request.getParameter("newName");
-		kvDB.renameTemplateKey(template, KVDB.JNODE, oldName,newName);
+		String value=kvDB.getTemplate(template, KVDB.JNODE, oldName);
+		if (value==null) {
+			value="";
+		}
+		kvDB.updateTemplate(template,  KVDB.JNODE, newName, value);
 		JSONObject json = Funcs.getJsonResp("0", "SUCCESS", "");
 		return json.toJSONString();
 	}
