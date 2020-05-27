@@ -1,20 +1,19 @@
-<div class="view">
-<h4 class="text-center">工程【${svgname}】</h4>  
-</div>
 <input class="hidden type="text" id="template" value="${template}"></input>
 <input id="svgname" value="${svgname}" class="hidden"></input>
  	<div class="view">
     	<ul class="btn-group nav pull-right">
         	<li>
-        	<span class="btn"  onclick="postsvg('${svgname}',dragData)"><i class="glyphicon glyphicon-ok text-danger">提交</i></span>
-        	<span class="btn"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'"><i class="glyphicon glyphicon-export text-danger">导出</i></span>
+        	<span class="btn"  onclick="postsvg('${svgname}',dragData)"><i class="glyphicon glyphicon-ok text-warn">提交</i></span>
+        	<span class="btn"  onclick="javascript:window.location.href='/${template}/project/exportcode/${svgname}'"><i class="glyphicon glyphicon-export text-warn">导出</i></span>
         	<span class="btn btn-info hidden"  onclick="getsvg('${svgname}')">Load</span>
         	</li>
         </ul>
      </div>
-       
+      
+      
      <div class="view">
         <ul class="shuiguo btn-group">
+         <li class="btn btn-primary" style="background:white;color:black;border:none;"><span> ${svgname}:</span></li>
         <#list names as name>
            <li draggable="true" class="btn btn-primary" data-name="${name}">${name}</li>
         </#list>

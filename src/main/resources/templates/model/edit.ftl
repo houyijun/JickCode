@@ -9,7 +9,7 @@
 		<legend contenteditable="true">代码模板配置【${template!''}】 </legend>	
         
 		<span class="help-block" contenteditable="true">模板内容</span>
-		<textarea name="modelContent"  class="form-control"  rows="20">${modelcontent!" ${'$'}{code_generated} "}</textarea>
+		<textarea name="modelContent"  class="form-control"  rows="16">${modelcontent!" ${'$'}{code_generated} "}</textarea>
 		
 		<button type="submit" class="btn btn-primary" contenteditable="true">修改</button>
 	</fieldset>

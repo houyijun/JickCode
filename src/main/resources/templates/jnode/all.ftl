@@ -27,10 +27,13 @@
       <#list jnodelist as node>
       <tr>
 			<td>${node_index+1}</td>
-            <td><a href="/${template}/jnode/edit/${node}">${node!''}</a></td>
+            <td>${node!''}</td>
             <td>
             
             <ul class="list-unstyled list-inline">
+            <li><span><a href="/${template}/jnode/edit/${node}"> <i  class="glyphicon glyphicon-pencil text-info" ></i></a></span>
+            </li>
+            
             <li><span> <i onclick="showRename('${node}');" class="glyphicon glyphicon-plus text-info" ></i></span>
             
             </li>
