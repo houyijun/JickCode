@@ -1,15 +1,17 @@
-<span class="configuration">
-	<a class="btn btn-sm btn-info" onclick="fileupload()"><i class="glyphicon glyphicon-folder-open">文件上传</i></a>
-</span>
+
 <form  enctype="multipart/form-data" action="/${template}/model/importContent.do" accept-charset="UTF-8" method="post">
    	<fieldset>
-		<legend contenteditable="true">代码模板配置【${template!''}】
-		 </legend>	
+   	
+   		<span class="pull-right">
+			<a class="btn btn-sm btn-info" onclick="fileupload()"><i class="glyphicon glyphicon-folder-open">文件上传</i></a>
+		</span>
+		
+		<legend contenteditable="true">代码模板配置【${template!''}】 </legend>	
         
 		<span class="help-block" contenteditable="true">模板内容</span>
 		<textarea name="modelContent"  class="form-control"  rows="20">${modelcontent!" ${'$'}{code_generated} "}</textarea>
 		
-		<button type="submit" class="btn btn-primary" contenteditable="true">提交</button>
+		<button type="submit" class="btn btn-primary" contenteditable="true">修改</button>
 	</fieldset>
 </form>
 

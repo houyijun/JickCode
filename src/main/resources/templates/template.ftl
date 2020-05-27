@@ -97,9 +97,9 @@ function submit(){
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                <h4 class="modal-title" id="myModalLabel">创建</h4>
            </div>
-        	<div class="modal-body"><span>名称</span>
+        	<div class="modal-body"><span>模板名称</span>
 				
-				<input type="text" name="modelname" class="spark-data btn form-control"  width="60px">
+				<input type="text" name="modelname" class="btn form-control">
      		</div>
   		
            <div class="modal-footer">

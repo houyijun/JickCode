@@ -18,15 +18,15 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Jnode Name</th>
-          <th>Status</th>
+          <th>名称</th>
+          <th>状态</th>
         </tr>
       </thead>
       <tbody>
       
       <#list jnodelist as node>
       <tr>
-			<td><a onclick="deljnode('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
+			<td>${node_index+1}</td>
             <td><a href="/${template}/jnode/edit/${node}">${node!''}</a></td>
             <td>
             
@@ -34,12 +34,13 @@
             <li><span> <i onclick="showRename('${node}');" class="glyphicon glyphicon-plus text-info" ></i></span>
             
             </li>
-            <li>
-                 
+            <li>                 
             <span><a href="/${template}/jnode/downsingle?node=${node}"><i class="glyphicon glyphicon-download" ></i></a> </span> 
-            
-              </li>
-             </ul>   
+             </li>
+            <li>
+               		<span><a onclick="deljnode('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a></span>   
+            </li>
+              </ul>   
              
             </td>
       <tr>

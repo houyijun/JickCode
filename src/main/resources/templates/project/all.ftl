@@ -9,26 +9,30 @@
         <tr>
           <th>#</th>
           <th>工程名称</th>
-          <th>生成代码</th>
+          <th>状态</th>
         </tr>
       </thead>
       <tbody>
       
       <#list svglist as node>
       <tr>
-			<td><a href="javascript:del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a>${node_index+1}</td>
-            <td><a href="/${template}/project/edit/${node}">${node!''}</a></td>
+			<td>${node_index+1}</td>
+            <td>${node!''}</td>
             <td>
             <ul class="list-unstyled list-inline">
+             <li>
+            <span><a class="text-muted" href="/${template}/project/edit/${node}"><i class="glyphicon glyphicon-pencil" ></i></a></span>
+            </li>
             <li>
             <span><a class="text-muted" href="/${template}/project/export/${node}"><i class="glyphicon glyphicon-eye-open" ></i></a></span>
             </li>
             <li>
-            <span><a class="text-muted" href="/${template}/project/exportcode/${node}"><i class="glyphicon glyphicon-download" ></i></a></span>
+            <span><a class="text-muted" href="/${template}/project/download/${node}"><i class="glyphicon glyphicon-save" ></i></a></span>
             </li>
             <li>
-            <span><a class="text-muted" href="/${template}/project/download/${node}"><i class="glyphicon glyphicon-folder-close" ></i></a></span>
+               		<span><a onclick="del('${node}');"><i class="glyphicon glyphicon-trash text-danger" ></i></a></span>   
             </li>
+              		
             </ul>
             </td>
       <tr>
