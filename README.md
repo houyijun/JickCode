@@ -17,7 +17,7 @@ JNode要配置两个东西，一个是modal对话框，定义该JNode节点有�
 		</div>
 	</div>
 </form>
-另一个是代码模板，兼容freemaker语法。${node}表示本节点。
+另一个是代码模板，兼容freemaker语法。${node}表示本节点,${parents}表示本节点的父节点数组。
 示例如下：
 val  myname="${node.props.myname}"
 val ${node.name}= spark.load("${node.props.myname}")

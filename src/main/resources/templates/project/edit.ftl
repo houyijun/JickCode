@@ -27,9 +27,10 @@
         <#noparse>
         <script type="text/javascript">
             var dragData = [];
-            var mapData = new Object();
+            var mapData = {};//new Object();
             //重置拖拽后流程图展示
             function reload(isend) {
+            	loadMap();
                 $(function() {
                     var html = "";
                     var g = `
@@ -57,12 +58,13 @@
                             var data = dragData[i];
                             html +=
                                 `
-                            <div class = "${data.name}" data-drag="1" data-id = "${data.id}" data-inx = "${data.inx}" data-iny = "${data.iny}" data-label = "${data.label}" ondragstart = "insideDrag(this)"  draggable = "true" style = "transform:translate(${data.x}px,${data.y}px)" onclick="shownode(${data.id})">
+                            <div class = "${data.name}" data-drag="1" data-id = "${data.id}" data-inx = "${data.inx}" data-iny = "${data.iny}" data-label = "${data.label}" ondragstart = "insideDrag(this)"  draggable = "true" style = "transform:translate(${data.x}px,${data.y}px)" >
                                 <span class = "${data.icon}" data-id = "${data.id}"></span>
-                                <span data-id = "${data.id}">${data.label}</span>
+                                <span onclick="shownode(${data.id})" data-id = "${data.id}">${data.label}</span>
                                 <div class = "output">
                                     <span class = "circle" title = "输出" onmousedown = "noDrag(this)" onmouseup = "addDrag(this)" onmouseleave = "draw(this)" onmouseenter = "noMove()" data-id = "${data.id}"></span>
                                 </div>
+                                <div class="pull-right"><i onclick="removeNode(${data.id});" class="glyphicon glyphicon-remove text-danger" ></i></div>
                             </div>  
                         `
                             if(data.link.length > 0) {
@@ -142,6 +144,7 @@
                 console.log(name);
                 //在可拖动元素放置在 <div> 元素中时执行事件ondrop
                 document.getElementById('d1').ondrop = function(e) {
+                	console.log("#drag in svg");
                     var sTop = $(document).scrollTop(); //文档滚动条偏移量top
                     var sLeft = $(document).scrollLeft(); //文档滚动条偏移量left
                     console.log('e.target', e.target.dataset.id);
@@ -190,7 +193,6 @@
                             props:new Object(),
                             icon: name + "Icon"
                         });
-                        mapData[myid]=dragData[dragData.length-1];
                         console.log(dragData);
                         newnode(name,myid);
                         reload(1);
@@ -259,7 +261,29 @@
                     drag(item.dataset.label, item.className, 'inside', item.dataset.id);
                 }
             }
+            
+            function loadMap(){
+            	mapData={};
+            	for(var i = 0; i < dragData.length; i++) { 
+            		mapData[dragData[i].id]=dragData[i];
+            	}
+            }
 
+			function removeNode(dataId){
+				console.log("##delete "+dataId);
+				for(var i = 0; i < dragData.length; i++) { 
+                    if(dragData[i] != undefined) {
+                       var data = dragData[i];
+                       if (data.id==dataId){
+                       	console.log("#name=",data.name);
+                       	dragData.splice(i, 1);
+                       	reload(1);
+                       	return; 
+                       }
+                    }
+                }
+			}
+			
             function noDrag(item) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -387,6 +411,7 @@
             }
             
             function postsvg(svgname,dragData){
+            	loadMap();
             	var template=$("#template").val();
 				$.each(mapData,function(name,value) {
 					console.log("#name:"+name+",value:"+value);
@@ -410,6 +435,7 @@
             
             // using json to construct properties values and decode properties and show in canvas 
 			function saveSourceFileDialog(nodeid){
+				loadMap();
 				var mydata=new Object();
 				$("#spark-canvas #"+nodeid+"  .spark-data").each(function(){
   				  	mydata[$(this).attr('name')]=$(this).val();
@@ -419,6 +445,7 @@
 			}
 			
 			function loadNodeProperties(nodeid,mapData){
+				loadMap();
 				var mydata=mapData[nodeid];
 				$("#spark-canvas #"+nodeid+"  .spark-data").each(function(){
 					console.log("##=",mydata.props[$(this).attr('name')]);
@@ -446,7 +473,6 @@
         					return;
         				}    				
                     	dragData=svg.chart;
-                    	mapData=svg.chart;
                     	reload(1);
                     	$("#spark-canvas").empty();
                     	 //load node property dialog 
