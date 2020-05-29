@@ -28,6 +28,13 @@ JNode要配置两个东西，一个是modal对话框，定义该JNode节点有�
 val  myname="${node.props.myname}"
 val ${node.name}= spark.load("${node.props.myname}")
 
+又比如：
+<#if parents ??>
+val ${node.nodeId}=${parents[0].name}.groupBy(${node.props.func1});
+<#else>
+val ${node.nodeId};
+</#if> 
+
 【代码模板配置】
 每种代码模板包含一个输出代码的字符串样式，必须要有  ${code_generated} ，这代表了这个svg图整个的输出代码。可以添加自己的文本。比如：
 package myspark

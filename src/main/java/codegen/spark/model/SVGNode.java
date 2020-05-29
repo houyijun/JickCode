@@ -19,6 +19,10 @@ public class SVGNode {
 		return id+name;
 	}
 	
+	public String getLabelName() {
+		return name+id;
+	}
+	
 	//父节点，是要要特殊处理的，特别是在存在多个父节点的情况下
 	private List<String> fathers;
 	

@@ -1,0 +1,19 @@
+package mycamel
+
+import org.apache.camel.*
+
+/**
+  Camel示例代码模板
+*/
+object CamelMain {
+     
+  def main(args: Array[String]): Unit = {
+    
+    // Camel code  是啥
+
+    ${code_generated} 
+    
+  }
+
+}
+
