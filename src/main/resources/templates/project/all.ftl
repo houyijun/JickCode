@@ -148,7 +148,7 @@ function submit(){
            		</div>
 			</form>
 			
-     		</div>  		
+     		</div> 
           
        </div><!-- /.modal-content -->
    </div><!-- /.modal -->
