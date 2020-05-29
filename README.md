@@ -11,9 +11,15 @@ Project Name: JickCode
 JNode要配置两个东西，一个是modal对话框，定义该JNode节点有哪些属性，在html上如何展示的，样式如下：
  <form class="form-horizontal">
 	<div class="control-group">
-	  <label class="control-label">Code format</label>
+		<label class="control-label">Path</label>
 		<div class="controls">
-			<input type="text" name="codename" class="spark-data" value="ss">
+			<input type="text" name="myname" class="spark-data" value="c:\\github\data">
+		</div>
+	</div>
+    <div class="control-group">
+		<label class="control-label">JDBC type</label>
+		<div class="controls">
+			<input type="text" name="myname2" class="spark-data" value="jdbc">
 		</div>
 	</div>
 </form>

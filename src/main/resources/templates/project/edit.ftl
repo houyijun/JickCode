@@ -27,10 +27,8 @@
         <#noparse>
         <script type="text/javascript">
             var dragData = [];
-            var mapData = {};//new Object();
             //重置拖拽后流程图展示
             function reload(isend) {
-            	loadMap();
                 $(function() {
                     var html = "";
                     var g = `
@@ -116,7 +114,7 @@
                         $('svg').off('mouseenter mouseleave', "path");
                     }
                    
-                    console.log($('svg').siblings());
+                    //console.log($('svg').siblings());
                 })
             }
             //reload();
@@ -124,13 +122,9 @@
                 e.preventDefault(); //流程图展示区阻止默认事件
             }
             var dWidth = Number($('#d1').css('width').slice(0, -2)); //流程图展示区域宽度
-            console.log(dWidth);
             var dHeight = Number($('#d1').css('height').slice(0, -2)); //流程图展示区域高度
-            console.log(dHeight);
             var dClient = $("#d1").offset().top; //流程图展示区偏移位置top
             var dLeft = $("#d1").offset().left; //流程图展示区偏移位置left
-            console.log('顶部位置', dClient);
-            console.log('左边位置', dLeft);
 
             //模块拖进流程图后，初始化拖拽方法
             /*
@@ -169,7 +163,7 @@
                     }
                     if(type == "outside") {
                         console.log('mouse down!');
-                        var myid=dragData.length;
+                        var myid=getNewNodeId();//dragData.length;
                         dragData.push({
                             id: myid,
                             label: word,
@@ -246,9 +240,7 @@
             }
             var shuiguo = $('.shuiguo li');
             var isondrag = 0;
-            console.log(shuiguo);
             for(var i = 0; i < shuiguo.length; i++) {
-                console.log(shuiguo[i]);
                 shuiguo[i].ondragstart = function() {
                     console.log('finished:'+this.dataset.name);
                     drag(this.innerHTML, this.dataset.name, 'outside');
@@ -262,11 +254,34 @@
                 }
             }
             
-            function loadMap(){
-            	mapData={};
+            // get next node id.from 0 to ...
+            function getNewNodeId(){
+            	var ids=[];
             	for(var i = 0; i < dragData.length; i++) { 
-            		mapData[dragData[i].id]=dragData[i];
+            		 if(dragData[i] != undefined) {
+            		 	ids.push(dragData[i].id);
+                     }
             	}
+            	var i=0;
+            	for ( i=0;i<ids.length*2;i++){
+            		var index=$.inArray(i,ids);
+            		if (index==-1){
+            			return i;
+            		}
+            	}
+            	return i;
+            }
+            
+           function getData(dataId){
+            	for(var i = 0; i < dragData.length; i++) { 
+            		 if(dragData[i] != undefined) {
+                       var data = dragData[i];
+                       if (data.id==dataId){
+                       	return data;
+                       	}
+                     }
+            	}
+            	return null;
             }
 
 			function removeNode(dataId){
@@ -275,7 +290,6 @@
                     if(dragData[i] != undefined) {
                        var data = dragData[i];
                        if (data.id==dataId){
-                       	console.log("#name=",data.name);
                        	dragData.splice(i, 1);
                        	reload(1);
                        	return; 
@@ -411,15 +425,12 @@
             }
             
             function postsvg(svgname,dragData){
-            	loadMap();
             	var template=$("#template").val();
-				$.each(mapData,function(name,value) {
-					console.log("#name:"+name+",value:"+value);
-     				saveSourceFileDialog(name);
-				});
+				 for(var i = 0; i < dragData.length; i++) {
+				 	saveSourceFileDialog(dragData[i].id);
+				 }
 				var target= new Object();
 				target.chart=dragData;
-				console.log("#target:",target);
             	$.ajax({
         			url:"/"+template+"/project/postSvg",
         			type:"post",
@@ -435,20 +446,16 @@
             
             // using json to construct properties values and decode properties and show in canvas 
 			function saveSourceFileDialog(nodeid){
-				loadMap();
 				var mydata=new Object();
 				$("#spark-canvas #"+nodeid+"  .spark-data").each(function(){
   				  	mydata[$(this).attr('name')]=$(this).val();
-  				  	dragData[nodeid].props[$(this).attr('name')]=$(this).val();
-  				  	mapData[nodeid].props[$(this).attr('name')]=$(this).val();
+  				  	getData(nodeid).props[$(this).attr('name')]=$(this).val();
   				});
 			}
 			
-			function loadNodeProperties(nodeid,mapData){
-				loadMap();
-				var mydata=mapData[nodeid];
+			function loadNodeProperties(nodeid){
+				var mydata=getData(nodeid);
 				$("#spark-canvas #"+nodeid+"  .spark-data").each(function(){
-					console.log("##=",mydata.props[$(this).attr('name')]);
 					$(this).val(mydata.props[$(this).attr('name')]);
   				});
 			}
@@ -466,7 +473,6 @@
         					console.log("svg content is null");
         					return;
         				}	
-        				console.log(res.data);
         				var svg=eval('(' + res.data + ')');    
         				if (svg.chart == null || svg.chart == undefined || svg.chart == '') {
         					console.log("#svg is null");
@@ -478,7 +484,7 @@
                     	 //load node property dialog 
                     	for(var i = 0; i < dragData.length; i++) {
                     		newnode(dragData[i].label,dragData[i].id);
-                    		loadNodeProperties(dragData[i].id,dragData);
+                    		loadNodeProperties(dragData[i].id);
                    	 	}
             		}
     			});

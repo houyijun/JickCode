@@ -2,6 +2,7 @@
 	<input class="hidden type="text" id="template" value="${template}"></input>
 	<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
+		<a class="btn btn-sm btn-info" onclick="showImport()"><i class="glyphicon glyphicon-open">Import</i></a>
 	</span>
 <div class="view">
   <table class="table" contenteditable="false">
@@ -67,6 +68,13 @@ function show(){
     })
 }
 
+function showImport(){
+	$("#importModal").modal({
+       		show: true,
+       		backdrop:'static'
+    })
+}
+
 function submit(){
 	var template=$("#template").val();
 	var name=$("#myModal input[name=name]").val();
@@ -89,7 +97,7 @@ function submit(){
 
 
 </script>
-<!-- 模态框（Modal） -->
+<!-- create 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog">
        <div class="modal-content">
@@ -108,3 +116,50 @@ function submit(){
        </div><!-- /.modal-content -->
    </div><!-- /.modal -->
  </div>
+ 
+ <!-- import模态框（Modal） -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title" id="myModalLabel">上传</h4>
+           </div>
+        	<div class="modal-body">
+				<form  enctype="multipart/form-data" action="/${template}/project/import.do" class="form-horizontal" accept-charset="UTF-8" method="post">
+        			<div class="control-group">
+						<label class="control-label">名称</label>
+						<div class="controls">
+							<input type="text" name="name" class="form-control">
+						</div>
+					</div>
+        			<div class="control-group">
+						<label class="control-label">上传文件</label>
+						<div class="controls">
+							<div class="file-loading">
+         						<input id="file-0c" class="file" name="filename" type="file" data-show-preview="false"  data-theme="fas">
+  							</div>
+						</div>
+					</div>
+        			
+         		<div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               <button type="submit button" class="btn btn-primary" >提交</button>
+           		</div>
+			</form>
+			
+     		</div>  		
+          
+       </div><!-- /.modal-content -->
+   </div><!-- /.modal -->
+ </div>
+
+<link href="/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+<link href="/fileinput/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+<script src="/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/fileinput/js/locales/fr.js" type="text/javascript"></script>
+<script src="/fileinput/js/locales/es.js" type="text/javascript"></script>
+<script src="/fileinput/themes/fas/theme.js" type="text/javascript"></script>
+<script src="/fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>   

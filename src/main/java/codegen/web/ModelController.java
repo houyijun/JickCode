@@ -46,7 +46,7 @@ public class ModelController {
 
 	// 导入模板文本
 	@RequestMapping("{template}/model/importContent.do")
-	public String importModel_do(@PathVariable String template,
+	public String importModelContent_do(@PathVariable String template,
 			@RequestParam(value = "modelContent") String modelContent, HttpServletRequest request) {
 		try {
 			kvDB.updateTemplate(template, KVDB.MODEL, template, modelContent);
