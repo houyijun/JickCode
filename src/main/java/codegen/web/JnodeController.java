@@ -148,13 +148,6 @@ public class JnodeController {
 	}
 	
 	
-	
-	@RequestMapping(value = { "{template}/jnode/import" })
-	public String importpage(@PathVariable String template,Map<String, Object> map) {
-		map.put("template", template);
-		map.put("divname", "/jnode/import.ftl");
-		return "/frame";
-	}
 	/**
 	 * 批量导入所有jnodes
 	 * @param file

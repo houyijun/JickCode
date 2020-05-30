@@ -5,7 +5,6 @@
 		<a class="btn btn-sm btn-info" href="/${template}/jnode/new" ><i class="glyphicon glyphicon-plus">Create</i></a>
 		
 		<a class="btn btn-sm btn-info" href="/${template}/jnode/download"><i class="glyphicon glyphicon-download">Export</i></a>
-		<a class="btn btn-sm btn-info hidden" href="/${template}/jnode/import"><i class="glyphicon glyphicon-upload">Import</i></a>
 		<a class="btn btn-sm btn-info" onclick="showImport();"><i class="glyphicon glyphicon-upload">Import</i></a>
 		
 	</span>
