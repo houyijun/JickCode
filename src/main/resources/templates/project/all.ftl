@@ -105,8 +105,14 @@ function submit(){
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                <h4 class="modal-title" id="myModalLabel">创建</h4>
            </div>
-        	<div class="modal-body"><span>名称</span>
-				<input type="text" name="name" class="spark-data btn form-control"  width="60px">
+        	<div class="modal-body">
+				<div class="control-group">	
+					<div class="controls">
+                       <label class="control-label">名称:</label>
+						<input type="text" name="name" class="spark-data">                   
+					</div>
+				</div>
+				
      		</div>
   		
            <div class="modal-footer">
