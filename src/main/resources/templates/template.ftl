@@ -1,7 +1,9 @@
-	<div class="h4">模板列表 </div>	
-	<span class="configuration">
-		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建模板</i></a>
-	</span>
+	<div class="view pull-right">
+		<span class="configuration">
+			<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">创建模板</i></a>
+		</span>
+	</div>
+	<span class="help-block h4">模板列表</span>
 	
 	<div class="view" style="padding-top:10px"></div>
 	

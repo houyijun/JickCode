@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 /**
  * 創建KV數據庫到Sqllite
  * 
@@ -19,6 +23,8 @@ import java.util.Map;
  */
 public class KVSqlliteUtil {
 
+	private static final Logger LOG = LoggerFactory.getLogger(KVSqlliteUtil.class);
+	
 	/**
 	 * 生成一个DB文件 （自动创建，创建连接）
 	 * 
@@ -267,9 +273,10 @@ public class KVSqlliteUtil {
 	}
 
 	public static boolean updateTemplateKVValue(Connection con,String template, String tableName, String key, String value) {
-		value=value.replaceAll("'","\'");
-		String sql = "update " + tableName + " set value='" + value + 
+		String newValue=value.replace("'","''");
+		String sql = "update " + tableName + " set value='" + newValue + 
 				"' where key='" + key + "' and template='"+template+"';";
+		LOG.info("KVSqlite:{}",sql);
 		Statement prep = null;
 		try {
 			prep = con.createStatement();

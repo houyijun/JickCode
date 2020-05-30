@@ -1,9 +1,13 @@
-	<div class="h4">工程列表【${template}】 </div>
 	<input class="hidden type="text" id="template" value="${template}"></input>
-	<span class="configuration">
+	
+	<div class="view pull-right">
+		<span class="configuration">
 		<a class="btn btn-sm btn-info" onclick="show()"><i class="glyphicon glyphicon-plus">Create</i></a>
 		<a class="btn btn-sm btn-info" onclick="showImport()"><i class="glyphicon glyphicon-open">Import</i></a>
 	</span>
+	</div>
+	<span class="help-block h4">工程列表【${template}】</span>
+	
 <div class="view">
   <table class="table" contenteditable="false">
       <thead>
@@ -109,7 +113,7 @@ function submit(){
 				<div class="control-group">	
 					<div class="controls">
                        <label class="control-label">名称:</label>
-						<input type="text" name="name" class="spark-data">                   
+						<input type="text" name="name" class="spark-data form-control">                   
 					</div>
 				</div>
 				

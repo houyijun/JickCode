@@ -1,4 +1,4 @@
-<div class="view">
+<div class="view pull-right">
 <span><a href="/${template}/project/exportcode/${svg}">下载代码</a></span>  
 </div>
 
